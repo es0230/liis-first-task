@@ -1,18 +1,19 @@
 import { UserData } from "../../models/user-data";
 import { createSlice } from '@reduxjs/toolkit';
+import { ReducerNames } from "../../constants/reducer-names";
 
 const initialState: UserData = {
     auth: false,
 } 
 
  const userData = createSlice({
-    name: 'USERDATA',
+    name: ReducerNames.User,
     initialState,
     reducers: {
-        logIn: (state, action) => {
+        logIn: (state) => {
             state.auth = true;
         },
-        logOut: (state, action) => {
+        logOut: (state) => {
             state.auth = false;
         }
     },

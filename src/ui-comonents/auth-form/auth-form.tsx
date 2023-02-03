@@ -1,6 +1,10 @@
 import { Field, Form, Formik } from "formik";
+import { useEffect } from "react";
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import * as yup from 'yup';
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { selectIsAuth } from "../../redux/user-data/selectors";
+import { logIn } from "../../redux/user-data/user-data";
 import Input from "../input/input";
 
 const validationSchema = yup.object().shape({
@@ -14,7 +18,12 @@ const formInitialValues = {
 };
 
 const AuthForm = () => {
+    const dispatch = useAppDispatch();
+    const isAuth = useAppSelector(selectIsAuth);
 
+    const handleFormSubmit = () => {
+        dispatch(logIn);
+    };
 
     return(
         <View style={styles.container}>
@@ -24,7 +33,7 @@ const AuthForm = () => {
                     <Text style={headerBold}>Simple Hotel Check</Text>
                 </View>
 
-                <Formik initialValues={formInitialValues} onSubmit={(values) => console.log(values)} validationSchema={validationSchema}>
+                <Formik initialValues={formInitialValues} onSubmit={handleFormSubmit} validationSchema={validationSchema}>
                     {({values, errors, touched, isValid, handleBlur, handleChange, handleSubmit}) => (
                         <View>
                             <Input
@@ -47,12 +56,14 @@ const AuthForm = () => {
                                 name="password"
                             />
                             
-                            <TouchableOpacity onPress={handleSubmit} activeOpacity={0.7} style={[styles.submit, !isValid ? styles.submitDisabled : {}]} disabled={!isValid}>
-                                <Text style={styles.text}>Войти</Text>
+                            <TouchableOpacity 
+                                onPress={handleSubmit} 
+                                activeOpacity={0.7} 
+                                style={[styles.submit, isValid && touched.email && touched.password ? styles.submitEnabled : {}, isAuth ? { backgroundColor: 'red' } : {}]} disabled={!(isValid && touched.email && touched.password)}>
+                                <Text style={styles.text}>{isAuth ? 'Уже зашел' : 'Войти'}</Text>
                             </TouchableOpacity>
                         </View>                        
                     )}
-
                 </Formik>
 
 
@@ -78,7 +89,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     submit: {
-        backgroundColor: '#5ac8fa',
+        backgroundColor: '#aaa',
         height: 50,
         borderRadius: 10,
         marginTop: 8,
@@ -108,8 +119,8 @@ const styles = StyleSheet.create({
         borderColor: '#ff3b30',
         borderWidth: 1,
     },
-    submitDisabled: {
-        backgroundColor: '#aaa',
+    submitEnabled: {
+        backgroundColor: '#5ac8fa',
     },
 });
 

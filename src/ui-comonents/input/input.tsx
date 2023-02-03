@@ -27,6 +27,7 @@ const Input = ({ placeholder, onChangeText, onBlur, value, error, touched, name 
     return (
         <View>
             <TextInput
+                secureTextEntry={name === 'password'}
                 placeholder={placeholder}
                 style={[styles.textInput, error && touched && !isFocused ? styles.textInputError : {}]} 
                 onChangeText={onChangeText}
