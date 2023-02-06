@@ -1,7 +1,7 @@
-import { Field, Form, Formik } from "formik";
-import { useEffect } from "react";
+import { Formik } from "formik";
 import { ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import * as yup from 'yup';
+
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { selectIsAuth } from "../../redux/user-data/selectors";
 import { logIn } from "../../redux/user-data/user-data";
@@ -59,8 +59,8 @@ const AuthForm = () => {
                             <TouchableOpacity 
                                 onPress={handleSubmit} 
                                 activeOpacity={0.7} 
-                                style={[styles.submit, isValid && touched.email && touched.password ? styles.submitEnabled : {}, isAuth ? { backgroundColor: 'red' } : {}]} disabled={!(isValid && touched.email && touched.password)}>
-                                <Text style={styles.text}>{isAuth ? 'Уже зашел' : 'Войти'}</Text>
+                                style={[styles.submit, (isValid && touched.email && touched.password) && styles.submitEnabled, isAuth && { backgroundColor: 'red' }]} disabled={!(isValid && touched.email && touched.password)}>
+                                <Text style={styles.text}>Войти</Text>
                             </TouchableOpacity>
                         </View>                        
                     )}

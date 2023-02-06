@@ -29,16 +29,15 @@ const Input = ({ placeholder, onChangeText, onBlur, value, error, touched, name 
             <TextInput
                 secureTextEntry={name === 'password'}
                 placeholder={placeholder}
-                style={[styles.textInput, error && touched && !isFocused ? styles.textInputError : {}]} 
+                style={[styles.textInput, error && touched && !isFocused && styles.textInputError || {}]} 
                 onChangeText={onChangeText}
                 onBlur={handleInputBlur}
                 onFocus={handleInputFocus}
                 value={value}
             />
 
-            {error && touched && !isFocused ?                                
-            <Text style={styles.error}>{error}</Text> :  
-            null}
+            {error && touched && !isFocused &&                                
+            <Text style={styles.error}>{error}</Text>}
         </View>
     );
 };

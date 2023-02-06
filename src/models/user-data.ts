@@ -1,3 +1,3 @@
 export type UserData = {
-    auth: boolean,
+    isAuth: boolean,
 };
