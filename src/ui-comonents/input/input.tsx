@@ -76,7 +76,9 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
     },
     inputWrapper: {
-        height: 50, width: '100%', flex: 1
+        height: 50,
+        width: '100%',
+        flex: 1
     }
 });
 
