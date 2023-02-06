@@ -6,6 +6,7 @@
  */
 
 import { Provider } from 'react-redux';
+
 import { store } from './src/redux';
 import SearchScreen from './src/screens/search-screen/search-screen';
 import AuthForm from './src/ui-comonents/auth-form/auth-form';

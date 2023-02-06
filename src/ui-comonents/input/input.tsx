@@ -37,7 +37,7 @@ const Input = ({ onBlur, error, touched, name, ...aditional }: InputProps) => {
                 secureTextEntry={name === 'password'}
                 style={[
                     styles.textInput,
-                    error && touched && !isFocused ? styles.textInputError : {},
+                    error && touched && !isFocused && styles.textInputError || {},
                     isSearchInput ? styles.searchInput : {},
                 ]} 
                 onBlur={handleInputBlur}
@@ -45,9 +45,8 @@ const Input = ({ onBlur, error, touched, name, ...aditional }: InputProps) => {
                 {...aditional}
             />
 
-            {error && touched && !isFocused ?                                
-            <Text style={styles.error}>{error}</Text> :  
-            null}
+            {error && touched && !isFocused &&                                
+            <Text style={styles.error}>{error}</Text>}
         </View>
     );
 };

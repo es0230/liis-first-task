@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { ReducerNames } from "../../constants/reducer-names";
 
 const initialState: UserData = {
-    auth: false,
+    isAuth: false,
 } 
 
  const userData = createSlice({
@@ -11,10 +11,10 @@ const initialState: UserData = {
     initialState,
     reducers: {
         logIn: (state) => {
-            state.auth = true;
+            state.isAuth = true;
         },
         logOut: (state) => {
-            state.auth = false;
+            state.isAuth = false;
         }
     },
 });
