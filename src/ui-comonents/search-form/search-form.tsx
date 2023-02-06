@@ -47,56 +47,26 @@ const SearchForm = (): JSX.Element => {
                             name={SearchInputNames.City}
                         />
 
-                        {/* <View style={styles.inputContainer}>
-                            <View style={styles.test1}>
-                                <Input
-                                    placeholder='Дата заезда'
-                                    error={errors[SearchInputNames.CheckIn]}
-                                    touched={touched[SearchInputNames.CheckIn]}
-                                    onChangeText={handleChange(SearchInputNames.CheckIn)}
-                                    onBlur={handleBlur(SearchInputNames.CheckIn)}
-                                    value={values[SearchInputNames.CheckIn]}
-                                    name={SearchInputNames.CheckIn}
-                                />
-                            </View>
-
-                            <View style={styles.test1}>
-                                <Input
-                                    placeholder='Длительность'
-                                    error={errors[SearchInputNames.Duration]}
-                                    touched={touched[SearchInputNames.Duration]}
-                                    onChangeText={handleChange(SearchInputNames.Duration)}
-                                    onBlur={handleBlur(SearchInputNames.Duration)}
-                                    value={values[SearchInputNames.Duration]}
-                                    name={SearchInputNames.Duration}
-                                />
-                            </View>
-                        </View> */}
-
                         <View style={styles.inputContainer}>
-                            {/* <View style={styles.test1}> */}
-                                <Input
-                                    placeholder='Дата заезда'
-                                    error={errors[SearchInputNames.CheckIn]}
-                                    touched={touched[SearchInputNames.CheckIn]}
-                                    onChangeText={handleChange(SearchInputNames.CheckIn)}
-                                    onBlur={handleBlur(SearchInputNames.CheckIn)}
-                                    value={values[SearchInputNames.CheckIn]}
-                                    name={SearchInputNames.CheckIn}
-                                />
-                            {/* </View> */}
+                            <Input
+                                placeholder='Дата заезда'
+                                error={errors[SearchInputNames.CheckIn]}
+                                touched={touched[SearchInputNames.CheckIn]}
+                                onChangeText={handleChange(SearchInputNames.CheckIn)}
+                                onBlur={handleBlur(SearchInputNames.CheckIn)}
+                                value={values[SearchInputNames.CheckIn]}
+                                name={SearchInputNames.CheckIn}
+                            />
 
-                            {/* <View style={styles.test1}> */}
-                                <Input
-                                    placeholder='Длительность'
-                                    error={errors[SearchInputNames.Duration]}
-                                    touched={touched[SearchInputNames.Duration]}
-                                    onChangeText={handleChange(SearchInputNames.Duration)}
-                                    onBlur={handleBlur(SearchInputNames.Duration)}
-                                    value={values[SearchInputNames.Duration]}
-                                    name={SearchInputNames.Duration}
-                                />
-                            {/* </View> */}
+                            <Input
+                                placeholder='Длительность'
+                                error={errors[SearchInputNames.Duration]}
+                                touched={touched[SearchInputNames.Duration]}
+                                onChangeText={handleChange(SearchInputNames.Duration)}
+                                onBlur={handleBlur(SearchInputNames.Duration)}
+                                value={values[SearchInputNames.Duration]}
+                                name={SearchInputNames.Duration}
+                            />
                         </View>
                             
                         <TouchableOpacity 
@@ -128,9 +98,9 @@ const SearchForm = (): JSX.Element => {
 
 const styles = StyleSheet.create({
     inputContainer: {
-        flexDirection: 'row', gap: 13
+        flexDirection: 'row',
+        gap: 13
     },
-    test1: { height: 50, width: '100%', flex: 1},
 });
 
 export default SearchForm;
