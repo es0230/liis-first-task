@@ -59,7 +59,7 @@ const AuthForm = () => {
                             <TouchableOpacity 
                                 onPress={handleSubmit} 
                                 activeOpacity={0.7} 
-                                style={[styles.submit, (isValid && touched.email && touched.password) && styles.submitEnabled, isAuth && { backgroundColor: 'red' }]} disabled={!(isValid && touched.email && touched.password)}>
+                                style={[styles.submit, (isValid && touched.email && touched.password) && styles.submitEnabled]}>
                                 <Text style={styles.text}>Войти</Text>
                             </TouchableOpacity>
                         </View>                        
