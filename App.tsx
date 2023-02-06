@@ -7,6 +7,7 @@
 
 import { StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
+
 import { store } from './src/redux';
 import AuthForm from './src/ui-comonents/auth-form/auth-form';
 
