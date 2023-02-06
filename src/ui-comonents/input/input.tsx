@@ -1,6 +1,7 @@
 import { FormikErrors, FormikTouched } from "formik";
 import { ChangeEvent, useState } from "react";
 import { View, TextInput, Text, StyleSheet, NativeSyntheticEvent, TextInputFocusEventData } from "react-native";
+import { SearchInputNames } from "../../constants/search-input-names";
 
 type InputProps = {
     placeholder: string,
@@ -23,13 +24,23 @@ const Input = ({ placeholder, onChangeText, onBlur, value, error, touched, name 
         onBlur(e);
         setIsFocused(false);
     };
+
+    const isSearchInput = Object.values<string>(SearchInputNames).includes(name);
     
     return (
-        <View>
+        <View style={
+            name === SearchInputNames.CheckIn || name === SearchInputNames.Duration ?
+            styles.inputWrapper :
+            {}}
+        > 
             <TextInput
                 secureTextEntry={name === 'password'}
                 placeholder={placeholder}
-                style={[styles.textInput, error && touched && !isFocused ? styles.textInputError : {}]} 
+                style={[
+                    styles.textInput,
+                    error && touched && !isFocused ? styles.textInputError : {},
+                    isSearchInput ? styles.searchInput : {},
+                ]} 
                 onChangeText={onChangeText}
                 onBlur={handleInputBlur}
                 onFocus={handleInputFocus}
@@ -50,7 +61,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 10, 
         color: '#424242',
-        marginBottom: 16,
         paddingVertical: 15,
         paddingLeft: 15,
     },
@@ -63,6 +73,14 @@ const styles = StyleSheet.create({
         borderColor: '#ff3b30',
         borderWidth: 1,
     },
+    searchInput: {
+        borderColor: '#5ac8fa',
+        borderWidth: 1,
+        paddingLeft: 10,
+    },
+    inputWrapper: {
+        height: 50, width: '100%', flex: 1
+    }
 });
 
 export default Input;
