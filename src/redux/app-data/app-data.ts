@@ -5,7 +5,7 @@ import { AppData } from "../../models/app-data";
 
 const initialState: AppData = {
     city: 'Москва',
-    checkIn: dayjs().format('YYYY-MM-DD'),
+    checkIn: dayjs().format('DD.MM.YYYY'),
     duration: '1',
 };
 

@@ -1,6 +1,9 @@
+import dayjs from "dayjs";
 import { FormikErrors, FormikTouched } from "formik";
 import { ChangeEvent, useState } from "react";
-import { View, TextInput, Text, StyleSheet, NativeSyntheticEvent, TextInputFocusEventData } from "react-native";
+import { View, TextInput, Text, StyleSheet, NativeSyntheticEvent, TextInputFocusEventData, Image, TouchableOpacity } from "react-native";
+import DatePicker from "react-native-date-picker";
+import { AuthInputNames } from "../../constants/auth-input-names";
 import { SearchInputNames } from "../../constants/search-input-names";
 
 type InputProps = {
@@ -10,11 +13,16 @@ type InputProps = {
     value: string,
     error: string | undefined,
     touched: boolean | undefined,
-    name: string
+    name: AuthInputNames | SearchInputNames
 };
 
 const Input = ({ onBlur, error, touched, name, ...aditional }: InputProps) => {
+    const { onChangeText } = aditional;
+
     const [isFocused, setIsFocused] = useState(false);
+
+    const [date, setDate] = useState(dayjs().toDate());
+    const [open, setOpen] = useState(false);
 
     const handleInputFocus = () => {
         setIsFocused(true);
@@ -25,15 +33,34 @@ const Input = ({ onBlur, error, touched, name, ...aditional }: InputProps) => {
         setIsFocused(false);
     };
 
+    const handleIconPress = () => {
+        setOpen(true);
+    };
+
+    const handleDateChange = (date: Date) => {
+        onChangeText(dayjs(date).format('DD.MM.YYYY'));
+        setDate(date);
+    };
+    
+    const getInputModeByFieldName = (name: AuthInputNames | SearchInputNames) => {
+        switch (name) {
+            case SearchInputNames.Duration:
+                return 'numeric';
+            case AuthInputNames.Email:
+                return 'email';
+            default:
+                return 'text';
+        }
+    };
+
     const isSearchInput = Object.values<string>(SearchInputNames).includes(name);
+    const isNumeralInput = name === SearchInputNames.CheckIn || name === SearchInputNames.Duration;
     
     return (
-        <View style={
-            name === SearchInputNames.CheckIn || name === SearchInputNames.Duration ?
-            styles.inputWrapper :
-            {}}
-        > 
+        <View style={isNumeralInput && styles.numeralInputWrapper || {}}> 
             <TextInput
+                editable={name !== SearchInputNames.CheckIn}
+                inputMode={getInputModeByFieldName(name)}
                 secureTextEntry={name === 'password'}
                 style={[
                     styles.textInput,
@@ -44,6 +71,34 @@ const Input = ({ onBlur, error, touched, name, ...aditional }: InputProps) => {
                 onFocus={handleInputFocus}
                 {...aditional}
             />
+
+            {isNumeralInput &&
+                <>
+                    <TouchableOpacity activeOpacity={1} onPress={handleIconPress}>
+                        <Image
+                            style={styles.numeralInputImage}
+                            source={name === SearchInputNames.CheckIn ?
+                                require('../../images/calendar.png') :
+                                require('../../images/clock.png')}
+                        />
+                    </TouchableOpacity>
+                    {name === SearchInputNames.CheckIn && 
+                        <DatePicker
+                            modal
+                            open={open}
+                            date={date}
+                            onConfirm={(date) => {
+                                setOpen(false);
+                                handleDateChange(date);
+                            }}
+                            onCancel={() => {
+                                setOpen(false);
+                            }}
+                        />
+                    }
+                    
+                </>
+            }
 
             {error && touched && !isFocused &&                                
             <Text style={styles.error}>{error}</Text>}
@@ -75,10 +130,15 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         paddingLeft: 10,
     },
-    inputWrapper: {
+    numeralInputWrapper: {
         height: 50,
-        width: '100%',
-        flex: 1
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    numeralInputImage: {
+        position: 'relative',
+        right: 33,
     }
 });
 

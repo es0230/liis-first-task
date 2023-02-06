@@ -1,34 +1,32 @@
 import { Formik } from "formik";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import * as yup from 'yup';
-import { commonStyles } from "../../constants/common-styles";
+import dayjs from "dayjs";
+
+
 import { SearchInputNames } from "../../constants/search-input-names";
 import Input from "../input/input";
-import DatePicker from 'react-native-date-picker'
-import { useState } from "react";
+
+import { commonStyles } from "../../constants/common-styles";
 
 const formInitialValues = {
-    city: 'Москва',
-    checkIn: '03.02.2023',
-    duration: '1',
+    [SearchInputNames.City]: 'Москва',
+    [SearchInputNames.CheckIn]: dayjs().format('DD.MM.YYYY'),
+    [SearchInputNames.Duration]: '1',
 };
 
 const validationSchema = yup.object().shape({
-    city: yup.string().required('Необходимо ввести название города'),
-    checkIn: yup.date().required('Необходимо выбрать дату заезда'),
-    duration: yup.number().min(1).max(31),
+    [SearchInputNames.City]: yup.string().required('Необходимо ввести название города'),
+    [SearchInputNames.CheckIn]: yup.string().required('Необходимо выбрать дату заезда'),
+    [SearchInputNames.Duration]: yup.number().min(1).max(31),
 });
 
 
 
 const SearchForm = (): JSX.Element => {
-
     const handleFormSubmit = () => {
     
     };
-
-    // const [date, setDate] = useState(new Date());
-    // const [open, setOpen] = useState(false);
 
     return (
         <View style={commonStyles.searchBlockWrapper}>
@@ -71,24 +69,12 @@ const SearchForm = (): JSX.Element => {
                             
                         <TouchableOpacity 
                             onPress={handleSubmit} 
-                            activeOpacity={0.7} 
-                            
-                            style={[commonStyles.submit, isValid && Object.values(touched).reduce((a, b) => a && b, true) ? commonStyles.submitEnabled : {}]} disabled={!(isValid && Object.values(touched).reduce((a, b) => a && b, true))}>
+                            activeOpacity={1} 
+                            style={[commonStyles.submit, isValid && Object.values(touched).reduce((a, b) => a && b, true) && commonStyles.submitEnabled || {}]}
+                            disabled={!isValid}
+                        >
                             <Text style={commonStyles.text}>Найти</Text>
                         </TouchableOpacity>
-
-                        {/* <DatePicker
-                                modal
-                                open={open}
-                                date={date}
-                                onConfirm={(date) => {
-                                    setOpen(false)
-                                    setDate(date)
-                                }}
-                                onCancel={() => {
-                                    setOpen(false)
-                                }}
-                            /> */}
                     </View>                        
                 )}
             </Formik>
