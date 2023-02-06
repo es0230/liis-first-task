@@ -6,7 +6,7 @@ const initialState: UserData = {
     isAuth: false,
 } 
 
- const userData = createSlice({
+const userData = createSlice({
     name: ReducerNames.User,
     initialState,
     reducers: {
