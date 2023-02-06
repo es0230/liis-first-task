@@ -57,10 +57,11 @@ const SearchScreen = ():JSX.Element => {
 
             <SearchForm />
                 
-            <View style={{gap: 16}}>
+            <View style={{flex: 1, gap: 16}}>
                 <Text style={commonStyles.searchBlockHeader}>Подходящие бронирования</Text>
                 <FlatList
                     data={mockHotels}
+                    contentContainerStyle={{ flexGrow: 1 }}
                     renderItem={({ item }) => <HotelItem hotel={item} />}
                     keyExtractor={(item) => item.id}
                 />
