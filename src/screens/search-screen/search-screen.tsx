@@ -6,35 +6,35 @@ import SearchForm from "../../ui-comonents/search-form/search-form";
 
 const mockHotels: Hotel[] = [
     {
-        title: 'a',
+        title: 'FFFFFFFffdfsdfsdfa',
         isFavorite: false,
         rating: 3,
         roomsLeft: 2,
-        price: 10001,
+        price: 10201,
         id: 1,
     },
     {
-        title: 'a',
+        title: 'Parks inn',
         isFavorite: false,
-        rating: 3,
+        rating: 4,
         roomsLeft: 2,
-        price: 10001,
+        price: 10221,
         id: 2,
     },
     {
-        title: 'a',
+        title: 'Moskva',
         isFavorite: false,
-        rating: 3,
+        rating: 2,
         roomsLeft: 2,
-        price: 10001,
+        price: 20001,
         id: 3,
     },
     {
-        title: 'a',
+        title: 'Mariott',
         isFavorite: false,
-        rating: 3,
+        rating: 1,
         roomsLeft: 2,
-        price: 10001,
+        price: 11001,
         id: 4,
     },
     {
@@ -63,7 +63,7 @@ const SearchScreen = ():JSX.Element => {
                     data={mockHotels}
                     contentContainerStyle={{ flexGrow: 1 }}
                     renderItem={({ item }) => <HotelItem hotel={item} />}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => `${item.id}`}
                 />
             </View>
         </View>
@@ -74,9 +74,6 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-    },
-    searchResults: {
-
     },
 });
 
