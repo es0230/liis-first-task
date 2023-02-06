@@ -13,7 +13,7 @@ type InputProps = {
     name: string
 };
 
-const Input = ({ placeholder, onChangeText, onBlur, value, error, touched, name }: InputProps) => {
+const Input = ({ onBlur, error, touched, name, ...aditional }: InputProps) => {
     const [isFocused, setIsFocused] = useState(false);
 
     const handleInputFocus = () => {
@@ -35,16 +35,14 @@ const Input = ({ placeholder, onChangeText, onBlur, value, error, touched, name 
         > 
             <TextInput
                 secureTextEntry={name === 'password'}
-                placeholder={placeholder}
                 style={[
                     styles.textInput,
                     error && touched && !isFocused ? styles.textInputError : {},
                     isSearchInput ? styles.searchInput : {},
                 ]} 
-                onChangeText={onChangeText}
                 onBlur={handleInputBlur}
                 onFocus={handleInputFocus}
-                value={value}
+                {...aditional}
             />
 
             {error && touched && !isFocused ?                                

@@ -41,7 +41,7 @@ const AuthForm = () => {
                                 placeholder="Логин"
                                 error={errors[AuthInputNames.Email]}
                                 touched={touched[AuthInputNames.Email]}
-                                onChangeText={handleChange([AuthInputNames.Email])}
+                                onChangeText={handleChange(AuthInputNames.Email)}
                                 onBlur={handleBlur(AuthInputNames.Email)}
                                 value={values[AuthInputNames.Email]}
                                 name={AuthInputNames.Email}
@@ -51,7 +51,7 @@ const AuthForm = () => {
                                 placeholder="Пароль"
                                 error={errors[AuthInputNames.Password]}
                                 touched={touched[AuthInputNames.Password]}
-                                onChangeText={handleChange([AuthInputNames.Password])}
+                                onChangeText={handleChange(AuthInputNames.Password)}
                                 onBlur={handleBlur(AuthInputNames.Password)}
                                 value={values[AuthInputNames.Password]}
                                 name={AuthInputNames.Password}
@@ -59,16 +59,14 @@ const AuthForm = () => {
                             
                             <TouchableOpacity 
                                 onPress={handleSubmit} 
-                                activeOpacity={0.7} 
+                                activeOpacity={1} 
                                 style={[
                                     commonStyles.submit,
-                                    isValid && touched.email && touched.password ? commonStyles.submitEnabled : {},
-                                    isAuth ? { backgroundColor: 'red' } : {},
-                                    {marginTop: 8}
+                                    (isValid && touched.email && touched.password) && commonStyles.submitEnabled,
+                                    { marginTop: 8 }
                                 ]}
-                                disabled={!(isValid && touched.email && touched.password)}
                             >
-                                <Text style={commonStyles.text}>{isAuth ? 'Уже зашел' : 'Войти'}</Text>
+                                <Text style={commonStyles.text}>Войти</Text>
                             </TouchableOpacity>
                         </View>                        
                     )}

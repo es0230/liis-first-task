@@ -14,8 +14,8 @@ import AuthForm from './src/ui-comonents/auth-form/auth-form';
 function App(): JSX.Element {
   return (
     <Provider store={store}>
-        {/* <AuthForm /> */}
-        <SearchScreen />
+        <AuthForm />
+        {/* <SearchScreen /> */}
     </Provider>
     
   );
