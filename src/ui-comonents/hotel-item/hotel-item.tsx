@@ -1,5 +1,5 @@
-import { Text, View } from "react-native";
-import { commonStyles } from "../../constants/common-styles";
+import { Image, StyleSheet, Text, View } from "react-native";
+
 import { getNumberedString } from "../../helpers/get-numbered-string";
 import { Hotel } from "../../models/hotel";
 
@@ -11,32 +11,66 @@ const HotelItem = ({ hotel }: HotelItemProps): JSX.Element => {
     const { title, isFavorite, rating, roomsLeft, price} = hotel;
 
     return (
-        <View style={commonStyles.searchBlockWrapper}>
-            <View>
-                <View></View>
+        <View style={styles.hotelBlock}>
+            <View style={styles.mainInfo}>
                 <View>
-                    <View>
-                        <Text>{title}</Text>
-                        {/* иконка избранного тут */}
+                    <Image source={require('../../images/house.png')} />
+                </View>
+
+                <View style={{ flexGrow: 1, justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <Text style={styles.importantText}>{title}</Text>
+                        <Image source={require('../../images/empty-heart.png')}/>
                     </View>
-                    <View style={{
-                        justifyContent: 'space-between',
-                    }}>
-                        {/* рейтинг тут */}
-                        <Text>Осталось {getNumberedString(roomsLeft, ['комната', 'комнаты', 'комнат'])}</Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <View style={{flexDirection: 'row', gap: 6}}>
+                            {Array.from({ length: 5 }, (v, i) => i)
+                                .map(
+                                    (el) => <Image source={rating > el ?
+                                        require('../../images/filled-star.png') :
+                                        require('../../images/empty-star.png')} />
+                            )}
+                        </View>
+                        
+                        <Text style={styles.secondaryText}>Осталось {getNumberedString(roomsLeft, ['комната', 'комнаты', 'комнат'])}</Text>
                     </View>
                 </View>
             </View>
-
-            <View style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end'
-            }}>
-                <Text>Цена за 1 ночь: </Text>
-                <Text>{price}</Text>
+            <View style={styles.additionalInfo}>
+                <Text style={styles.secondaryText}>Цена за 1 ночь: </Text>
+                <Text style={styles.importantText}>{price} ₽</Text>
             </View>
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    hotelBlock: {
+        backgroundColor: 'white',
+        borderRadius: 16,
+        padding: 16,
+        marginBottom: 16,
+    },
+    importantText: {
+        fontSize: 17,
+    },
+    secondaryText: {
+        color: '#878787',
+        fontSize: 13,
+    },
+    mainInfo: {
+        flexDirection: 'row',
+        gap: 12,
+        borderBottomWidth: 1,
+        borderColor: '#f4f4f4',
+        paddingBottom: 8,
+        marginBottom: 8
+    },
+    additionalInfo: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center'
+    },
+})
 
 export default HotelItem;
