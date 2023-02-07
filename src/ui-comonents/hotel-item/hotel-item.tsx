@@ -8,7 +8,7 @@ type HotelItemProps = {
 }
 
 const HotelItem = ({ hotel }: HotelItemProps): JSX.Element => {
-    const { title, isFavorite, rating, roomsLeft, price} = hotel;
+    const { hotelName, isFavorite, stars, priceFrom} = hotel;
 
     return (
         <View style={styles.hotelBlock}>
@@ -19,26 +19,26 @@ const HotelItem = ({ hotel }: HotelItemProps): JSX.Element => {
 
                 <View style={{ flexGrow: 1, justifyContent: 'space-between'}}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <Text style={styles.importantText}>{title}</Text>
+                        <Text style={styles.importantText}>{hotelName}</Text>
                         <Image source={require('../../images/empty-heart.png')}/>
                     </View>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <View style={{flexDirection: 'row', gap: 6}}>
                             {Array.from({ length: 5 }, (v, i) => i)
                                 .map(
-                                    (el) => <Image source={rating > el ?
+                                    (el) => <Image source={stars > el ?
                                         require('../../images/filled-star.png') :
                                         require('../../images/empty-star.png')} />
                             )}
                         </View>
                         
-                        <Text style={styles.secondaryText}>Осталось {getNumberedString(roomsLeft, ['комната', 'комнаты', 'комнат'])}</Text>
+                        <Text style={styles.secondaryText}>Осталось {getNumberedString(1, ['комната', 'комнаты', 'комнат'])}</Text>
                     </View>
                 </View>
             </View>
             <View style={styles.additionalInfo}>
                 <Text style={styles.secondaryText}>Цена за 1 ночь: </Text>
-                <Text style={styles.importantText}>{price} ₽</Text>
+                <Text style={styles.importantText}>{priceFrom} ₽</Text>
             </View>
         </View>
     );

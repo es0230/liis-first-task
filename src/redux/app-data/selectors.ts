@@ -15,3 +15,5 @@ export const selectURLRequest = (state: RootState): string => {
 
 	return `cache.json?location=${city}&currency=rub&checkIn=${checkIn}&checkOut=${checkOut}&limit=10`;
 };
+
+export const selectHotels = (state: RootState) => state[ReducerNames.App].hotels;
