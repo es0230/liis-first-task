@@ -8,11 +8,13 @@ import { SearchInputNames } from "../../constants/search-input-names";
 import Input from "../input/input";
 
 import { commonStyles } from "../../constants/common-styles";
+import { useAppDispatch } from "../../hooks";
+import { setCheckIn, setCity, setDuration } from "../../redux/app-data/app-data";
 
 const formInitialValues = {
     [SearchInputNames.City]: 'Москва',
     [SearchInputNames.CheckIn]: dayjs().format('DD.MM.YYYY'),
-    [SearchInputNames.Duration]: '1',
+    [SearchInputNames.Duration]: 1,
 };
 
 const validationSchema = yup.object().shape({
@@ -21,11 +23,19 @@ const validationSchema = yup.object().shape({
     [SearchInputNames.Duration]: yup.number().min(1).max(31),
 });
 
-
+type FormikProps = {
+    city: string,
+    checkIn: string,
+    duration: number,
+};
 
 const SearchForm = (): JSX.Element => {
-    const handleFormSubmit = () => {
-    
+    const dispatch = useAppDispatch();
+
+    const handleFormSubmit = ({city, checkIn, duration}: FormikProps) => {
+        dispatch(setCity(city));
+        dispatch(setCheckIn(checkIn));
+        dispatch(setDuration(duration));
     };
 
     return (
@@ -62,7 +72,7 @@ const SearchForm = (): JSX.Element => {
                                 touched={touched[SearchInputNames.Duration]}
                                 onChangeText={handleChange(SearchInputNames.Duration)}
                                 onBlur={handleBlur(SearchInputNames.Duration)}
-                                value={values[SearchInputNames.Duration]}
+                                value={`${values[SearchInputNames.Duration]}`}
                                 name={SearchInputNames.Duration}
                             />
                         </View>

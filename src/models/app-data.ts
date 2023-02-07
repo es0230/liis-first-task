@@ -1,5 +1,5 @@
 export type AppData = {
     city: string,
     checkIn: string,
-    duration: string,
+    duration: number,
 };

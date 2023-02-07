@@ -6,7 +6,7 @@ import { AppData } from "../../models/app-data";
 const initialState: AppData = {
     city: 'Москва',
     checkIn: dayjs().format('DD.MM.YYYY'),
-    duration: '1',
+    duration: 1,
 };
 
 const appData = createSlice({
@@ -14,11 +14,17 @@ const appData = createSlice({
     initialState,
     reducers: {
         setCity: (state, action) => {
-
+            state.city = action.payload;
         },
+        setCheckIn: (state, action) => {
+            state.checkIn = action.payload;
+        },
+        setDuration: (state, action) => {
+            state.duration = action.payload;
+        }
     }
 });
 
-export const { } = appData.actions;
+export const {setCity, setCheckIn, setDuration} = appData.actions;
 
 export const appReducer = appData.reducer;
