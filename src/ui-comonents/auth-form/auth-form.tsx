@@ -24,7 +24,7 @@ const AuthForm = () => {
     const isAuth = useAppSelector(selectIsAuth);
 
     const handleFormSubmit = () => {
-        dispatch(logIn);
+        dispatch(logIn());
     };
 
     return(

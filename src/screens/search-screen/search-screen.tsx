@@ -1,62 +1,28 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { commonStyles } from "../../constants/common-styles";
-import { useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { Hotel } from "../../models/hotel";
 import { selectHotels } from "../../redux/app-data/selectors";
+import { selectIsAuth } from "../../redux/user-data/selectors";
+import { logOut } from "../../redux/user-data/user-data";
 import HotelItem from "../../ui-comonents/hotel-item/hotel-item";
 import SearchForm from "../../ui-comonents/search-form/search-form";
 
-// const mockHotels: Hotel[] = [
-//     {
-//         title: 'FFFFFFFffdfsdfsdfa',
-//         isFavorite: false,
-//         rating: 3,
-//         roomsLeft: 2,
-//         price: 10201,
-//         id: 1,
-//     },
-//     {
-//         title: 'Parks inn',
-//         isFavorite: false,
-//         rating: 4,
-//         roomsLeft: 2,
-//         price: 10221,
-//         id: 2,
-//     },
-//     {
-//         title: 'Moskva',
-//         isFavorite: false,
-//         rating: 2,
-//         roomsLeft: 2,
-//         price: 20001,
-//         id: 3,
-//     },
-//     {
-//         title: 'Mariott',
-//         isFavorite: false,
-//         rating: 1,
-//         roomsLeft: 2,
-//         price: 11001,
-//         id: 4,
-//     },
-//     {
-//         title: 'a',
-//         isFavorite: false,
-//         rating: 3,
-//         roomsLeft: 2,
-//         price: 10001,
-//         id: 5,
-//     },
-// ];
-
 const SearchScreen = (): JSX.Element => {
+    const dispatch = useAppDispatch();
     const hotels = useAppSelector(selectHotels);
+
+    const handleLogoutPress = () => {
+        dispatch(logOut());
+    };
 
     return (
         <View style={[commonStyles.container, {paddingHorizontal: 16, paddingTop: 69, gap: 24}]}>
             <View style={styles.header}>
                 <Text style={commonStyles.screenHeader}>Simple Hotel Check</Text>
-                <Text style={commonStyles.screenHeader}>E</Text>
+                <TouchableOpacity onPress={handleLogoutPress}>
+                    <Image source={require('../../images/log-out.png')} />
+                </TouchableOpacity>
             </View>
 
             <SearchForm />
@@ -78,6 +44,7 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center'
     },
 });
 
