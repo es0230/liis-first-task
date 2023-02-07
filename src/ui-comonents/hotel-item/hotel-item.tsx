@@ -8,7 +8,7 @@ type HotelItemProps = {
 }
 
 const HotelItem = ({ hotel }: HotelItemProps): JSX.Element => {
-    const { hotelName, isFavorite, stars, priceFrom} = hotel;
+    const { hotelName, stars, priceFrom} = hotel;
 
     return (
         <View style={styles.hotelBlock}>
