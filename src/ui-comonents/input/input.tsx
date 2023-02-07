@@ -60,6 +60,7 @@ const Input = ({ onBlur, error, touched, name, ...aditional }: InputProps) => {
         <View style={isNumeralInput && styles.numeralInputWrapper || {}}> 
             <TextInput
                 editable={name !== SearchInputNames.CheckIn}
+                // @ts-ignore
                 inputMode={getInputModeByFieldName(name)}
                 secureTextEntry={name === 'password'}
                 style={[
