@@ -9,11 +9,14 @@ import Input from "../input/input";
 
 import { commonStyles } from "../../constants/common-styles";
 import { useAppDispatch } from "../../hooks";
-import { setCheckIn, setCity, setDuration } from "../../redux/app-data/app-data";
+import { fetchHotels, setCheckIn, setCity, setDuration } from "../../redux/app-data/app-data";
+import { useEffect, useState } from "react";
+
+const initialDate = dayjs();
 
 const formInitialValues = {
     [SearchInputNames.City]: 'Москва',
-    [SearchInputNames.CheckIn]: dayjs().format('DD.MM.YYYY'),
+    [SearchInputNames.CheckIn]: initialDate.format('DD.MM.YYYY'),
     [SearchInputNames.Duration]: 1,
 };
 
@@ -32,10 +35,21 @@ type FormikProps = {
 const SearchForm = (): JSX.Element => {
     const dispatch = useAppDispatch();
 
+    const [fetchHotelsNeeded, setFetchHotelsNeeded] = useState(true);
+
+    useEffect(() => {
+        if (fetchHotelsNeeded) {
+            dispatch(fetchHotels());
+            console.log('lol');
+            setFetchHotelsNeeded(false);
+        }
+    }, [fetchHotelsNeeded]);
+
     const handleFormSubmit = ({city, checkIn, duration}: FormikProps) => {
         dispatch(setCity(city));
-        dispatch(setCheckIn(checkIn));
+        dispatch(setCheckIn(initialDate.format('YYYY-MM-DD')));
         dispatch(setDuration(duration));
+        setFetchHotelsNeeded(true);
     };
 
     return (
