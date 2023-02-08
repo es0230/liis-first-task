@@ -1,4 +1,4 @@
 export enum AuthInputNames {
-    Email = 'email',
-    Password = 'password',
-};
+  Email = 'email',
+  Password = 'password',
+}

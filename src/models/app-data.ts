@@ -1,8 +1,6 @@
-import { Hotel } from "./hotel";
+import { Hotel } from './hotel';
+import { SearchParameters } from './search-parameters';
 
-export type AppData = {
-    city: string,
-    checkIn: string,
-    duration: number,
-    hotels: Hotel[],
+export type AppData = SearchParameters & {
+  hotels: Hotel[],
 };

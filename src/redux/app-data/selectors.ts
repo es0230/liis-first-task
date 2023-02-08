@@ -1,6 +1,7 @@
-import dayjs from "dayjs";
-import { RootState } from "..";
-import { ReducerNames } from "../../constants/reducer-names";
+import dayjs from 'dayjs';
+
+import { RootState } from '..';
+import { ReducerNames } from '../../constants/reducer-names';
 
 export const selectCity = (state: RootState) => state[ReducerNames.App].city;
 
@@ -9,11 +10,11 @@ export const selectCheckIn = (state: RootState) => state[ReducerNames.App].check
 export const selectDuration = (state: RootState) => state[ReducerNames.App].duration;
 
 export const selectURLRequest = (state: RootState): string => {
-	const { city, checkIn, duration } = state[ReducerNames.App];
+  const { city, checkIn, duration } = state[ReducerNames.App];
 
-	const checkOut = dayjs(checkIn).add(duration, 'day').format('YYYY-MM-DD');
+  const checkOut = dayjs(checkIn).add(duration, 'day').format('YYYY-MM-DD');
 
-	return `cache.json?location=${city}&currency=rub&checkIn=${checkIn}&checkOut=${checkOut}&limit=10`;
+  return `cache.json?location=${city}&currency=rub&checkIn=${checkIn}&checkOut=${checkOut}&limit=10`;
 };
 
 export const selectHotels = (state: RootState) => state[ReducerNames.App].hotels;
