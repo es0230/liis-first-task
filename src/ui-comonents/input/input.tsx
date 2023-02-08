@@ -1,67 +1,82 @@
-import { FormikErrors, FormikTouched } from "formik";
-import { ChangeEvent, useState } from "react";
-import { View, TextInput, Text, StyleSheet, NativeSyntheticEvent, TextInputFocusEventData } from "react-native";
+import { useState } from 'react';
+import {
+  View, TextInput, Text, StyleSheet, NativeSyntheticEvent, TextInputFocusEventData, ViewStyle
+} from 'react-native';
+
+import { AuthInputNames } from '../../constants/auth-input-names';
+import { SearchInputNames } from '../../constants/search-input-names';
+
+import { commonStyles } from '../../constants/common-styles';
 
 type InputProps = {
-    placeholder: string,
-    onChangeText: (e: string | ChangeEvent<any>) => void ,
-    onBlur: (e: any) => void,
-    value: string,
-    error: string | undefined,
-    touched: boolean | undefined,
-    name: string
+  placeholder: string,
+  onChangeText: ((text: string) => void),
+  onBlur: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void,
+  value: string,
+  error?: string,
+  touched?: boolean,
+  name: AuthInputNames | SearchInputNames,
+  children?: JSX.Element,
+  additionalStyles?: ViewStyle,
+  inputMode?: string,
 };
 
-const Input = ({ placeholder, onChangeText, onBlur, value, error, touched, name }: InputProps) => {
-    const [isFocused, setIsFocused] = useState(false);
+const Input = ({
+  onBlur, error, touched, name, children, additionalStyles, ...aditional
+}: InputProps) => {
+  const [isFocused, setIsFocused] = useState(false);
 
-    const handleInputFocus = () => {
-        setIsFocused(true);
-    };
+  const handleInputFocus = () => {
+    setIsFocused(true);
+  };
 
-    const handleInputBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-        onBlur(e);
-        setIsFocused(false);
-    };
-    
-    return (
-        <View>
-            <TextInput
-                secureTextEntry={name === 'password'}
-                placeholder={placeholder}
-                style={[styles.textInput, error && touched && !isFocused && styles.textInputError || {}]} 
-                onChangeText={onChangeText}
-                onBlur={handleInputBlur}
-                onFocus={handleInputFocus}
-                value={value}
-            />
+  const handleInputBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+    onBlur(e);
+    setIsFocused(false);
+  };
 
-            {error && touched && !isFocused &&                                
-            <Text style={styles.error}>{error}</Text>}
-        </View>
-    );
+  return (
+    <View style={name === SearchInputNames.Duration && commonStyles.numeralInputWrapper}>
+      <TextInput
+        editable={name !== SearchInputNames.CheckIn}
+        secureTextEntry={name === AuthInputNames.Password}
+        style={[
+          styles.textInput,
+          (error && touched && !isFocused && styles.textInputError) || {},
+          additionalStyles,
+        ]}
+        onBlur={handleInputBlur}
+        onFocus={handleInputFocus}
+        {...aditional}
+      />
+
+      {name === SearchInputNames.Duration && children}
+
+      {error && touched
+        && !isFocused && <Text style={commonStyles.inputError}>{error}</Text>}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    textInput: {
-        height: 50,
-        width: '100%',
-        backgroundColor: 'white',
-        borderRadius: 10, 
-        color: '#424242',
-        marginBottom: 16,
-        paddingVertical: 15,
-        paddingLeft: 15,
-    },
-    error: {
-        color: 'white',
-        position: 'absolute',
-        top: 48,
-    },
-    textInputError: {
-        borderColor: '#ff3b30',
-        borderWidth: 1,
-    },
+  textInput: {
+    height: 50,
+    width: '100%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    color: '#424242',
+    paddingVertical: 15,
+    paddingLeft: 15,
+  },
+  textInputError: {
+    borderColor: '#ff3b30',
+    borderWidth: 1,
+  },
+  searchInput: {
+    borderColor: '#5ac8fa',
+    borderWidth: 1,
+    paddingLeft: 10,
+  },
 });
 
 export default Input;

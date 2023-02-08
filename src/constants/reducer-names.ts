@@ -1,4 +1,4 @@
 export enum ReducerNames {
-    User = 'USER_DATA',
-    App = 'APP_DATA',
+  User = 'USER_DATA',
+  App = 'APP_DATA',
 }
