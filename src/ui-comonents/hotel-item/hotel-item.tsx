@@ -26,10 +26,12 @@ const HotelItem = ({ hotel }: HotelItemProps): JSX.Element => {
             <View style={{ flexDirection: 'row', gap: 6 }}>
               {Array.from({ length: 5 }, (v, i) => i)
                 .map(
-                  (el) => (
-                    <Image source={stars > el
-                      ? require('../../images/filled-star.png')
-                      : require('../../images/empty-star.png')}
+                  (el, i) => (
+                    <Image
+                      key={i}
+                      source={stars > el
+                        ? require('../../images/filled-star.png')
+                        : require('../../images/empty-star.png')}
                     />
                   )
                 )}

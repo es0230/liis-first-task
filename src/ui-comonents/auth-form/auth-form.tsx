@@ -3,6 +3,7 @@ import {
   ImageBackground, Keyboard, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View
 } from 'react-native';
 import * as yup from 'yup';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { AuthInputNames } from '../../constants/auth-input-names';
 import { commonStyles } from '../../constants/common-styles';
@@ -24,8 +25,10 @@ const formInitialValues = {
 const AuthForm = () => {
   const dispatch = useAppDispatch();
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     dispatch(logIn());
+
+    await AsyncStorage.setItem('isAuth', 'true');
   };
 
   return (

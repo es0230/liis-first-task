@@ -1,6 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
-import { put } from 'redux-saga/effects';
+import { all, put } from 'redux-saga/effects';
 import { call, takeLatest } from 'typed-redux-saga';
 
 import { createAPI } from '../api';
@@ -8,6 +8,7 @@ import { Hotel } from '../models/hotel';
 import { SearchParameters } from '../models/search-parameters';
 import { fetchHotels } from '../redux/actions';
 import { setHotels } from '../redux/app-data/app-data';
+import { authWorker } from './auth-saga';
 
 const api = createAPI();
 
@@ -26,5 +27,8 @@ function* fetchHotelsWorker({ payload }: PayloadAction<SearchParameters>) {
 }
 
 export function* hotelsWatcher() {
-  yield takeLatest(fetchHotels, fetchHotelsWorker);
+  yield all([
+    takeLatest(fetchHotels, fetchHotelsWorker),
+    authWorker()
+  ]);
 }

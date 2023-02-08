@@ -1,6 +1,7 @@
 import {
   FlatList, Image, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { commonStyles } from '../../constants/common-styles';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -15,6 +16,8 @@ const SearchScreen = (): JSX.Element => {
 
   const handleLogoutPress = () => {
     dispatch(logOut());
+
+    AsyncStorage.clear();
   };
 
   return (
