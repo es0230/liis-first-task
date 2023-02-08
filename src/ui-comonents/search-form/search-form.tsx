@@ -56,7 +56,7 @@ const SearchForm = (): JSX.Element => {
 
       <Formik initialValues={formInitialValues} onSubmit={handleFormSubmit} validationSchema={validationSchema}>
         {({
-          values, errors, touched, isValid, handleBlur, handleChange, handleSubmit
+          values, errors, touched, isValid, handleBlur, handleChange, handleSubmit,
         }) => (
           <View style={{ gap: 16 }}>
             <Input
@@ -67,6 +67,7 @@ const SearchForm = (): JSX.Element => {
               onBlur={handleBlur(SearchInputNames.City)}
               value={values[SearchInputNames.City]}
               name={SearchInputNames.City}
+              additionalStyles={styles.searchInput}
             />
 
             <View style={styles.inputContainer}>
@@ -92,6 +93,8 @@ const SearchForm = (): JSX.Element => {
                 onBlur={handleBlur(SearchInputNames.Duration)}
                 value={`${values[SearchInputNames.Duration]}`}
                 name={SearchInputNames.Duration}
+                additionalStyles={styles.searchInput}
+                inputMode="numeric"
               >
                 <Image
                   style={commonStyles.numeralInputImage}
@@ -103,8 +106,7 @@ const SearchForm = (): JSX.Element => {
             <TouchableOpacity
               onPress={handleSubmit}
               activeOpacity={1}
-              style={[commonStyles.submit,
-                (isValid && Object.values(touched).reduce((a, b) => a && b, true) && commonStyles.submitEnabled) || {}]}
+              style={[commonStyles.submit, isValid && commonStyles.submitEnabled]}
               disabled={!isValid}
             >
               <Text style={commonStyles.text}>Найти</Text>
@@ -120,6 +122,11 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     gap: 13
+  },
+  searchInput: {
+    borderColor: '#5ac8fa',
+    borderWidth: 1,
+    paddingLeft: 10,
   },
 });
 

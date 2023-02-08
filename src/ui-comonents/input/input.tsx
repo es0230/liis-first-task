@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  View, TextInput, Text, StyleSheet, NativeSyntheticEvent, TextInputFocusEventData
+  View, TextInput, Text, StyleSheet, NativeSyntheticEvent, TextInputFocusEventData, ViewStyle
 } from 'react-native';
 
 import { AuthInputNames } from '../../constants/auth-input-names';
@@ -17,10 +17,12 @@ type InputProps = {
   touched?: boolean,
   name: AuthInputNames | SearchInputNames,
   children?: JSX.Element,
+  additionalStyles?: ViewStyle,
+  inputMode?: string,
 };
 
 const Input = ({
-  onBlur, error, touched, name, children, ...aditional
+  onBlur, error, touched, name, children, additionalStyles, ...aditional
 }: InputProps) => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -33,30 +35,15 @@ const Input = ({
     setIsFocused(false);
   };
 
-  const getInputModeByFieldName = (name: AuthInputNames | SearchInputNames) => {
-    switch (name) {
-      case SearchInputNames.Duration:
-        return 'numeric';
-      case AuthInputNames.Email:
-        return 'email';
-      default:
-        return 'text';
-    }
-  };
-
-  const isSearchInput = Object.values<string>(SearchInputNames).includes(name);
-
   return (
-    <View style={(name === SearchInputNames.Duration && commonStyles.numeralInputWrapper) || {}}>
+    <View style={name === SearchInputNames.Duration && commonStyles.numeralInputWrapper}>
       <TextInput
         editable={name !== SearchInputNames.CheckIn}
-                // @ts-ignore
-        inputMode={getInputModeByFieldName(name)}
         secureTextEntry={name === AuthInputNames.Password}
         style={[
           styles.textInput,
           (error && touched && !isFocused && styles.textInputError) || {},
-          isSearchInput ? styles.searchInput : {},
+          additionalStyles,
         ]}
         onBlur={handleInputBlur}
         onFocus={handleInputFocus}
@@ -65,8 +52,8 @@ const Input = ({
 
       {name === SearchInputNames.Duration && children}
 
-      {error && touched && !isFocused
-            && <Text style={styles.error}>{error}</Text>}
+      {error && touched
+        && !isFocused && <Text style={commonStyles.inputError}>{error}</Text>}
     </View>
   );
 };
@@ -80,11 +67,6 @@ const styles = StyleSheet.create({
     color: '#424242',
     paddingVertical: 15,
     paddingLeft: 15,
-  },
-  error: {
-    color: 'white',
-    position: 'absolute',
-    top: 48,
   },
   textInputError: {
     borderColor: '#ff3b30',

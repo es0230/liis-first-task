@@ -36,9 +36,7 @@ const HotelItem = ({ hotel }: HotelItemProps): JSX.Element => {
             </View>
 
             <Text style={styles.secondaryText}>
-              Осталось
-              {' '}
-              {getNumericDeclension(1, ['комната', 'комнаты', 'комнат'])}
+              {`Осталось ${getNumericDeclension(1, ['комната', 'комнаты', 'комнат'])}`}
             </Text>
           </View>
         </View>
@@ -46,9 +44,7 @@ const HotelItem = ({ hotel }: HotelItemProps): JSX.Element => {
       <View style={styles.additionalInfo}>
         <Text style={styles.secondaryText}>Цена за 1 ночь: </Text>
         <Text style={styles.importantText}>
-          {priceFrom}
-          {' '}
-          ₽
+          {`${priceFrom} ₽`}
         </Text>
       </View>
     </View>

@@ -54,6 +54,7 @@ const AuthForm = () => {
                   onBlur={handleBlur(AuthInputNames.Email)}
                   value={values[AuthInputNames.Email]}
                   name={AuthInputNames.Email}
+                  inputMode="email"
                 />
 
                 <Input

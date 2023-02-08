@@ -42,5 +42,28 @@ export const commonStyles = StyleSheet.create({
   numeralInputImage: {
     position: 'relative',
     right: 33,
-  }
+  },
+  textInput: {
+    height: 50,
+    width: '100%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    color: '#424242',
+    paddingVertical: 15,
+    paddingLeft: 15,
+  },
+  textInputError: {
+    borderColor: '#ff3b30',
+    borderWidth: 1,
+  },
+  searchInput: {
+    borderColor: '#5ac8fa',
+    borderWidth: 1,
+    paddingLeft: 10,
+  },
+  inputError: {
+    color: 'red',
+    position: 'absolute',
+    top: 48,
+  },
 });

@@ -4,14 +4,13 @@ import DatePicker from 'react-native-date-picker';
 import {
   NativeSyntheticEvent,
   StyleSheet,
-  Text,
   TextInput,
   TextInputFocusEventData,
   TouchableOpacity,
-  View
 } from 'react-native';
 
 import { SearchInputNames } from '../../../constants/search-input-names';
+import { commonStyles } from '../../../constants/common-styles';
 
 type DateInputProps = {
   onChangeText: ((text: string) => void),
@@ -28,7 +27,7 @@ const DateInput = ({
 }: DateInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [date, setDate] = useState(dayjs().toDate());
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleInputFocus = () => {
     setIsFocused(true);
@@ -39,8 +38,8 @@ const DateInput = ({
     setIsFocused(false);
   };
 
-  const handleIconPress = () => {
-    setOpen(true);
+  const handleDateFieldPress = () => {
+    setIsOpen(true);
   };
 
   const handleDateChange = (date: Date) => {
@@ -49,70 +48,46 @@ const DateInput = ({
   };
 
   const handleDatePickConfirm = (date: Date) => {
-    setOpen(false);
+    setIsOpen(false);
     handleDateChange(date);
   };
 
   const handleDatePickCancel = () => {
-    setOpen(false);
+    setIsOpen(false);
   };
 
   return (
-    <View style={styles.numeralInputWrapper}>
+    <TouchableOpacity style={styles.numeralInputWrapper} activeOpacity={1} onPress={handleDateFieldPress}>
       <TextInput
         editable={false}
         style={[
-          styles.textInput,
-          (error && touched && !isFocused && styles.textInputError) || {},
-          styles.searchInput,
+          commonStyles.textInput,
+          (error && touched && !isFocused && commonStyles.textInputError) || {},
+          commonStyles.searchInput,
         ]}
         onBlur={handleInputBlur}
         onFocus={handleInputFocus}
+        onPressOut={handleDateFieldPress}
         {...additional}
       />
 
-      <TouchableOpacity activeOpacity={1} onPress={handleIconPress}>
-        {children}
-      </TouchableOpacity>
+      {children}
 
       <DatePicker
         modal
-        open={open}
+        open={isOpen}
         date={date}
+        minimumDate={date}
+        mode="date"
+        locale="ru"
         onConfirm={handleDatePickConfirm}
         onCancel={handleDatePickCancel}
       />
-
-      {error && touched && !isFocused
-            && <Text style={styles.error}>{error}</Text>}
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  textInput: {
-    height: 50,
-    width: '100%',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    color: '#424242',
-    paddingVertical: 15,
-    paddingLeft: 15,
-  },
-  error: {
-    color: 'white',
-    position: 'absolute',
-    top: 48,
-  },
-  textInputError: {
-    borderColor: '#ff3b30',
-    borderWidth: 1,
-  },
-  searchInput: {
-    borderColor: '#5ac8fa',
-    borderWidth: 1,
-    paddingLeft: 10,
-  },
   numeralInputWrapper: {
     height: 50,
     flex: 1,
