@@ -4,7 +4,6 @@ import logger from 'redux-logger';
 
 import { rootReducer } from './root-reducer';
 import { rootWatcher } from '../sagas';
-// import { ReducerNames } from '../constants/reducer-names';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -14,7 +13,6 @@ export const store = configureStore({
     thunk: false,
     serializableCheck: false,
   }).concat(...[logger, sagaMiddleware]),
-  // preloadedState: { [ReducerNames.User]: { isAuth: true } },
 });
 
 sagaMiddleware.run(rootWatcher);
