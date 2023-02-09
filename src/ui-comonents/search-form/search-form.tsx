@@ -7,13 +7,24 @@ import dayjs from 'dayjs';
 import { useEffect } from 'react';
 
 import { SearchInputNames } from '../../constants/search-input-names';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { SearchParameters } from '../../models/search-parameters';
 import { fetchHotels } from '../../redux/actions';
 import Input from '../input/input';
 import DateInput from './search-form-components/date-input';
 
 import { commonStyles } from '../../constants/common-styles';
+import { selectCheckIn } from '../../redux/app-data/selectors';
+
+type SearchFormProps = {
+  onSearchPress: (searchParams: SearchParameters) => void,
+};
+
+type FormikProps = {
+  city: string,
+  checkIn: string,
+  duration: number,
+};
 
 const initialDate = dayjs();
 
@@ -29,14 +40,9 @@ const validationSchema = yup.object().shape({
   [SearchInputNames.Duration]: yup.number().min(1).max(31),
 });
 
-type FormikProps = {
-  city: string,
-  checkIn: string,
-  duration: number,
-};
-
-const SearchForm = (): JSX.Element => {
+const SearchForm = ({ onSearchPress }: SearchFormProps): JSX.Element => {
   const dispatch = useAppDispatch();
+  const checkInDate = useAppSelector(selectCheckIn);
 
   const getHotels = (payload: SearchParameters) => {
     dispatch(fetchHotels(payload));
@@ -47,7 +53,10 @@ const SearchForm = (): JSX.Element => {
   }, []);
 
   const handleFormSubmit = ({ city, duration }: FormikProps) => {
-    getHotels({ city, checkIn: initialDate.format('YYYY-MM-DD'), duration });
+    const paramsToSearch = { city, checkIn: checkInDate, duration };
+
+    getHotels(paramsToSearch);
+    onSearchPress(paramsToSearch);
   };
 
   return (

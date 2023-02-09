@@ -6,11 +6,13 @@ import { getNumericDeclension } from '../../helpers/get-numeric-declension';
 import { Hotel } from '../../models/hotel';
 
 type HotelItemProps = {
-  hotel: Hotel
+  hotel: Hotel,
+  duration: number,
 };
 
-const HotelItem = ({ hotel }: HotelItemProps): JSX.Element => {
+const HotelItem = ({ hotel, duration }: HotelItemProps): JSX.Element => {
   const { hotelName, stars, priceFrom } = hotel;
+  const formattedDuration = getNumericDeclension(duration, ['ночь', 'ночи', 'ночей']);
 
   return (
     <View style={styles.hotelBlock}>
@@ -20,8 +22,10 @@ const HotelItem = ({ hotel }: HotelItemProps): JSX.Element => {
         <View style={{ flexGrow: 1, justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.importantText}>{hotelName}</Text>
+
             <Image source={require('../../images/empty-heart.png')} />
           </View>
+
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <View style={{ flexDirection: 'row', gap: 6 }}>
               {Array.from({ length: 5 }, (v, i) => i)
@@ -43,11 +47,11 @@ const HotelItem = ({ hotel }: HotelItemProps): JSX.Element => {
           </View>
         </View>
       </View>
+
       <View style={styles.additionalInfo}>
-        <Text style={styles.secondaryText}>Цена за 1 ночь: </Text>
-        <Text style={styles.importantText}>
-          {`${priceFrom} ₽`}
-        </Text>
+        <Text style={styles.secondaryText}>{`Цена за ${formattedDuration}: `}</Text>
+
+        <Text style={styles.importantText}>{`${priceFrom} ₽`}</Text>
       </View>
     </View>
   );

@@ -10,8 +10,13 @@ export const commonStyles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
   },
-  screenHeader: {
+  screenHeaderText: {
     fontWeight: '700', fontSize: 24
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   submit: {
     backgroundColor: '#aaa',

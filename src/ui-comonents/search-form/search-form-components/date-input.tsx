@@ -11,6 +11,8 @@ import {
 
 import { SearchInputNames } from '../../../constants/search-input-names';
 import { commonStyles } from '../../../constants/common-styles';
+import { useAppDispatch } from '../../../hooks';
+import { setCheckIn } from '../../../redux/app-data/app-data';
 
 type DateInputProps = {
   onChangeText: ((text: string) => void),
@@ -25,6 +27,8 @@ type DateInputProps = {
 const DateInput = ({
   onBlur, error, touched, onChangeText, children, ...additional
 }: DateInputProps) => {
+  const dispatch = useAppDispatch();
+
   const [isFocused, setIsFocused] = useState(false);
   const [date, setDate] = useState(dayjs().toDate());
   const [isOpen, setIsOpen] = useState(false);
@@ -44,6 +48,7 @@ const DateInput = ({
 
   const handleDateChange = (date: Date) => {
     onChangeText(dayjs(date).format('DD.MM.YYYY'));
+    dispatch(setCheckIn(dayjs(date).format('YYYY-MM-DD')));
     setDate(date);
   };
 
@@ -77,7 +82,7 @@ const DateInput = ({
         modal
         open={isOpen}
         date={date}
-        minimumDate={date}
+        minimumDate={dayjs().toDate()}
         mode="date"
         locale="ru"
         onConfirm={handleDatePickConfirm}

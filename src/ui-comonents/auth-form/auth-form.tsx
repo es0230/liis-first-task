@@ -6,10 +6,11 @@ import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { AuthInputNames } from '../../constants/auth-input-names';
-import { commonStyles } from '../../constants/common-styles';
 import { useAppDispatch } from '../../hooks';
 import { logIn } from '../../redux/user-data/user-data';
 import Input from '../input/input';
+
+import { commonStyles } from '../../constants/common-styles';
 
 const validationSchema = yup.object().shape({
   [AuthInputNames.Email]: yup.string().email('Необходимо ввести валидный email').required('Необходимо ввести email'),
@@ -41,7 +42,7 @@ const AuthForm = () => {
         >
           <View>
             <Text style={[commonStyles.text, { fontSize: 18 }]}>Добро пожаловать в</Text>
-            <Text style={[commonStyles.text, commonStyles.screenHeader]}>Simple Hotel Check</Text>
+            <Text style={[commonStyles.text, commonStyles.screenHeaderText]}>Simple Hotel Check</Text>
           </View>
 
           <Formik initialValues={formInitialValues} onSubmit={handleFormSubmit} validationSchema={validationSchema}>
