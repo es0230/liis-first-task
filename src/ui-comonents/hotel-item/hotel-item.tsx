@@ -21,7 +21,7 @@ const HotelItem = ({ hotel, duration }: HotelItemProps): JSX.Element => {
 
         <View style={{ flexGrow: 1, justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={[styles.importantText, { width: '70%', height: 40 }]}>{hotelName}</Text>
+            <Text style={[styles.importantText, { flex: 1, paddingRight: 10, height: 40 }]}>{hotelName}</Text>
 
             <Image source={require('../../images/empty-heart.png')} />
           </View>
