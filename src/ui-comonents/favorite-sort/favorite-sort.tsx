@@ -28,37 +28,47 @@ const FavoriteSort = () => {
     <View style={{
       flex: 1,
       paddingHorizontal: 16,
-      paddingBottom: 16,
     }}
     >
-      <View style={styles.sortWrapper}>
-        <Text>Cортировать по: </Text>
+      {favoriteHotels.length === 0
+        ? (
+          <View style={{ marginTop: 40, alignItems: 'center' }}>
+            <Text style={{ fontSize: 18 }}>В избранном пока ничего нет</Text>
+          </View>
+        )
+        : (
+          <>
+            <View style={styles.sortWrapper}>
+              <Text>Cортировать по: </Text>
 
-        <View style={styles.sortOptionsWrapper}>
-          <SortOption
-            text="Рейтинг"
-            sortType={SortTypes.Rating}
-            onSortOptionPress={onSortOptionPress}
-          />
+              <View style={styles.sortOptionsWrapper}>
+                <SortOption
+                  text="Рейтинг"
+                  sortType={SortTypes.Rating}
+                  onSortOptionPress={onSortOptionPress}
+                />
 
-          <SortOption
-            text="Цена"
-            sortType={SortTypes.Price}
-            onSortOptionPress={onSortOptionPress}
-          />
-        </View>
-      </View>
+                <SortOption
+                  text="Цена"
+                  sortType={SortTypes.Price}
+                  onSortOptionPress={onSortOptionPress}
+                />
+              </View>
+            </View>
+            <FlatList
+              style={{
+                marginTop: 24
+              }}
+              data={favoriteHotels}
+              contentContainerStyle={{ flexGrow: 1, paddingBottom: 16, }}
+              renderItem={({ item }) => <FavoriteHotelItem hotel={item} />}
+              keyExtractor={(item) => `${item.hotelId}${item.checkIn}${item.duration}`}
+              showsVerticalScrollIndicator={false}
+            />
 
-      <FlatList
-        style={{
-          marginTop: 24
-        }}
-        data={favoriteHotels}
-        contentContainerStyle={{ flexGrow: 1 }}
-        renderItem={({ item }) => <FavoriteHotelItem hotel={item} />}
-        keyExtractor={(item) => `${item.hotelId}${item.checkIn}${item.duration}`}
-        showsVerticalScrollIndicator={false}
-      />
+          </>
+        )}
+
     </View>
   );
 };

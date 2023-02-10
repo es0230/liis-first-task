@@ -6,5 +6,7 @@ export type AppData = SearchParameters & {
   hotels: Hotel[],
   sortType: SortTypes,
   sortOrder: SortOrders,
-  favoriteHotels: FavoriteHotel[]
+  favoriteHotels: FavoriteHotel[],
+  isLoading: boolean,
+  hotelsFetchFailed: boolean
 };

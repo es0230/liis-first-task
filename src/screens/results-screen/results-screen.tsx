@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList, Image, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,7 +10,7 @@ import PagerView from 'react-native-pager-view';
 import { useRef, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { selectHotels } from '../../redux/app-data/selectors';
+import { selectHotels, selectHotelsFetchFailed, selectIsLoading } from '../../redux/app-data/selectors';
 import { logOut } from '../../redux/user-data/user-data';
 import HotelItem from '../../ui-comonents/hotel-item/hotel-item';
 import { ScreenNames } from '../../constants/screen-names';
@@ -19,12 +20,16 @@ import { ResultTabs } from '../../constants/result-tabs';
 import FavoriteSort from '../../ui-comonents/favorite-sort/favorite-sort';
 
 import { commonStyles } from '../../constants/common-styles';
+import FetchFailedMessage from '../../ui-comonents/fetch-failed-message/fetch-failed-message';
 
 type ResultsScreenProps = NativeStackScreenProps<RootStackParamList, ScreenNames.Results>;
 
 const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
   const dispatch = useAppDispatch();
   const hotels = useAppSelector(selectHotels);
+  const isLoading = useAppSelector(selectIsLoading);
+  const isFetchFailed = useAppSelector(selectHotelsFetchFailed);
+
   const [currentTab, setCurrentTab] = useState(ResultTabs.Search);
 
   const pagerViewRef = useRef<PagerView | null>(null);
@@ -59,6 +64,19 @@ const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
 
     pagerViewRef.current?.setPage(page);
   };
+
+  const content = isFetchFailed
+    ? <FetchFailedMessage />
+    : (
+      <FlatList
+        style={styles.hotelList}
+        data={hotels}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 16, }}
+        renderItem={({ item }) => <HotelItem checkIn={checkIn} hotel={item} duration={duration} />}
+        keyExtractor={(item) => `${item.hotelId}`}
+        showsVerticalScrollIndicator={false}
+      />
+    );
 
   return (
     <View style={[commonStyles.container]}>
@@ -107,14 +125,9 @@ const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
         onPageSelected={handlePageScroll}
       >
         <View style={[styles.listContainer, { paddingBottom: 16 }]} key={1}>
-          <FlatList
-            style={styles.hotelList}
-            data={hotels}
-            contentContainerStyle={{ flexGrow: 1 }}
-            renderItem={({ item }) => <HotelItem checkIn={checkIn} hotel={item} duration={duration} />}
-            keyExtractor={(item) => `${item.hotelId}`}
-            showsVerticalScrollIndicator={false}
-          />
+          {isLoading
+            ? <ActivityIndicator style={{ marginTop: 100 }} size="large" color="#5AC8FA" />
+            : content}
         </View>
 
         <FavoriteSort key={2} />

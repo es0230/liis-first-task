@@ -19,4 +19,8 @@ export const selectFavoriteHotels = (state: RootState) => state[ReducerNames.App
 export const selectIsFavoriteHotel = (hotel: FavoriteHotel) => (state: RootState) => state[ReducerNames.App]
   .favoriteHotels.some((el) => el.checkIn === hotel.checkIn
   && el.duration === hotel.duration
-  && el.hotelId === hotel.hotelId);
+      && el.hotelId === hotel.hotelId);
+
+export const selectIsLoading = (state: RootState) => state[ReducerNames.App].isLoading;
+
+export const selectHotelsFetchFailed = (state: RootState) => state[ReducerNames.App].hotelsFetchFailed;

@@ -15,6 +15,8 @@ const initialState: AppData = {
   sortType: SortTypes.Rating,
   sortOrder: SortOrders.Asc,
   favoriteHotels: [],
+  isLoading: false,
+  hotelsFetchFailed: false,
 };
 
 const appData = createSlice({
@@ -65,6 +67,12 @@ const appData = createSlice({
         );
       }
     },
+    setIsLoading: (state, action) => {
+      state.isLoading = action.payload;
+    },
+    setHotelsFetchFailed: (state, action) => {
+      state.hotelsFetchFailed = action.payload;
+    },
   }
 });
 
@@ -78,7 +86,9 @@ export const {
   setFavoriteHotels,
   addToFavoriteHotels,
   deleteFromFavorites,
-  sortHotels
+  sortHotels,
+  setIsLoading,
+  setHotelsFetchFailed
 } = appData.actions;
 
 export const appReducer = appData.reducer;

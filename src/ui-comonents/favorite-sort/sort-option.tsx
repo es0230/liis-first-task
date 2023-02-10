@@ -1,6 +1,7 @@
 import {
   TouchableOpacity, Text, Image, StyleSheet
 } from 'react-native';
+
 import { SortOrders, SortTypes } from '../../constants/sort';
 import { useAppSelector } from '../../hooks';
 import { SortParams } from '../../models/sort-params';

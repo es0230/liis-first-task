@@ -10,9 +10,10 @@ import {
 } from 'react-native';
 
 import { SearchInputNames } from '../../../constants/search-input-names';
-import { commonStyles } from '../../../constants/common-styles';
 import { useAppDispatch } from '../../../hooks';
 import { setCheckIn } from '../../../redux/app-data/app-data';
+
+import { commonStyles } from '../../../constants/common-styles';
 
 type DateInputProps = {
   onChangeText: ((text: string) => void),

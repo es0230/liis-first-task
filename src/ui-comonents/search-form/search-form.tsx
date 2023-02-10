@@ -12,9 +12,9 @@ import { SearchParameters } from '../../models/search-parameters';
 import { fetchHotels } from '../../redux/actions';
 import Input from '../input/input';
 import DateInput from './search-form-components/date-input';
+import { selectCheckIn } from '../../redux/app-data/selectors';
 
 import { commonStyles } from '../../constants/common-styles';
-import { selectCheckIn } from '../../redux/app-data/selectors';
 
 type SearchFormProps = {
   onSearchPress: (searchParams: SearchParameters) => void,
