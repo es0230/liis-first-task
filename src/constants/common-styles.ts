@@ -11,7 +11,8 @@ export const commonStyles = StyleSheet.create({
     fontSize: 16,
   },
   screenHeaderText: {
-    fontWeight: '700', fontSize: 24
+    fontWeight: '700',
+    fontSize: 24,
   },
   headerContainer: {
     flexDirection: 'row',
