@@ -28,6 +28,7 @@ const FavoriteSort = () => {
     <View style={{
       flex: 1,
       paddingHorizontal: 16,
+      paddingBottom: 16,
     }}
     >
       <View style={styles.sortWrapper}>

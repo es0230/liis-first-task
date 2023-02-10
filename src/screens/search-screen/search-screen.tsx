@@ -48,13 +48,14 @@ const SearchScreen = ({ navigation }: SearchScreenProps): JSX.Element => {
 
       <SearchForm onSearchPress={onSearchPress} />
 
-      <View style={{ flex: 1, gap: 16 }}>
+      <View style={{ flex: 1, gap: 16, paddingBottom: 16 }}>
         <Text style={commonStyles.searchBlockHeader}>Подходящие бронирования</Text>
         <FlatList
           data={hotels}
           contentContainerStyle={{ flexGrow: 1 }}
           renderItem={({ item }) => <HotelItem hotel={item} checkIn={checkIn} duration={currentDuration} />}
           keyExtractor={(item) => `${item.hotelId}${checkIn}${currentDuration}`}
+          showsVerticalScrollIndicator={false}
         />
       </View>
     </View>

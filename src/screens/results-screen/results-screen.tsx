@@ -106,13 +106,14 @@ const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
         initialPage={0}
         onPageSelected={handlePageScroll}
       >
-        <View style={styles.listContainer} key={1}>
+        <View style={[styles.listContainer, { paddingBottom: 16 }]} key={1}>
           <FlatList
             style={styles.hotelList}
             data={hotels}
             contentContainerStyle={{ flexGrow: 1 }}
             renderItem={({ item }) => <HotelItem checkIn={checkIn} hotel={item} duration={duration} />}
             keyExtractor={(item) => `${item.hotelId}`}
+            showsVerticalScrollIndicator={false}
           />
         </View>
 
