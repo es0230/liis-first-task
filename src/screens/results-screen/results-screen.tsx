@@ -9,7 +9,7 @@ import PagerView from 'react-native-pager-view';
 import { useRef, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { selectFavoriteHotels, selectHotels } from '../../redux/app-data/selectors';
+import { selectHotels } from '../../redux/app-data/selectors';
 import { logOut } from '../../redux/user-data/user-data';
 import HotelItem from '../../ui-comonents/hotel-item/hotel-item';
 import { ScreenNames } from '../../constants/screen-names';
@@ -25,7 +25,6 @@ type ResultsScreenProps = NativeStackScreenProps<RootStackParamList, ScreenNames
 const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
   const dispatch = useAppDispatch();
   const hotels = useAppSelector(selectHotels);
-  const favoriteHotels = useAppSelector(selectFavoriteHotels);
   const [currentTab, setCurrentTab] = useState(ResultTabs.Search);
 
   const pagerViewRef = useRef<PagerView | null>(null);
@@ -112,12 +111,12 @@ const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
             style={styles.hotelList}
             data={hotels}
             contentContainerStyle={{ flexGrow: 1 }}
-            renderItem={({ item }) => <HotelItem hotel={item} duration={duration} />}
+            renderItem={({ item }) => <HotelItem checkIn={checkIn} hotel={item} duration={duration} />}
             keyExtractor={(item) => `${item.hotelId}`}
           />
         </View>
 
-        <FavoriteSort key={2} hotels={favoriteHotels} duration={duration} />
+        <FavoriteSort key={2} />
       </PagerView>
     </View>
   );

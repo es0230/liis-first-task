@@ -3,6 +3,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import dayjs from 'dayjs';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { selectDuration, selectHotels } from '../../redux/app-data/selectors';
@@ -22,6 +23,7 @@ const SearchScreen = ({ navigation }: SearchScreenProps): JSX.Element => {
   const dispatch = useAppDispatch();
   const hotels = useAppSelector(selectHotels);
   const currentDuration = useAppSelector(selectDuration);
+  const checkIn = dayjs().format('YYYY-MM-DD');
 
   const handleLogoutPress = () => {
     dispatch(logOut());
@@ -51,8 +53,8 @@ const SearchScreen = ({ navigation }: SearchScreenProps): JSX.Element => {
         <FlatList
           data={hotels}
           contentContainerStyle={{ flexGrow: 1 }}
-          renderItem={({ item }) => <HotelItem hotel={item} duration={currentDuration} />}
-          keyExtractor={(item) => `${item.hotelId}`}
+          renderItem={({ item }) => <HotelItem hotel={item} checkIn={checkIn} duration={currentDuration} />}
+          keyExtractor={(item) => `${item.hotelId}${checkIn}${currentDuration}`}
         />
       </View>
     </View>

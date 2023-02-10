@@ -5,42 +5,23 @@ import {
 } from 'react-native';
 
 import { SortOrders, SortTypes } from '../../constants/sort';
-import { useAppDispatch } from '../../hooks';
-import { Hotel } from '../../models/hotel';
-import { setFavoriteHotels, setSortOrder, setSortType } from '../../redux/app-data/app-data';
-import HotelItem from '../hotel-item/hotel-item';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import {
+  setSortOrder, setSortType, sortHotels
+} from '../../redux/app-data/app-data';
+import { selectFavoriteHotels } from '../../redux/app-data/selectors';
+import FavoriteHotelItem from '../favorite-hotel-item/favorite-hotel-item';
 import SortOption from './sort-option';
 
-type FavoriteSortProps = {
-  hotels: Hotel[],
-  duration: number,
-};
-
-enum SortTypesToHotelKeys {
-  rating = 'stars',
-  price = 'priceFrom',
-}
-
-const FavoriteSort = ({ hotels, duration }: FavoriteSortProps) => {
+const FavoriteSort = () => {
   const dispatch = useAppDispatch();
+
+  const favoriteHotels = useAppSelector(selectFavoriteHotels);
 
   const onSortOptionPress = (sortType: SortTypes, sortOrder: SortOrders) => {
     dispatch(setSortOrder(sortOrder));
     dispatch(setSortType(sortType));
-
-    if (sortOrder === SortOrders.Asc) {
-      dispatch(
-        setFavoriteHotels(
-          [...hotels].sort((a, b) => a[SortTypesToHotelKeys[sortType]] - b[SortTypesToHotelKeys[sortType]])
-        )
-      );
-    } else {
-      dispatch(
-        setFavoriteHotels(
-          [...hotels].sort((a, b) => b[SortTypesToHotelKeys[sortType]] - a[SortTypesToHotelKeys[sortType]])
-        )
-      );
-    }
+    dispatch(sortHotels());
   };
 
   return (
@@ -71,14 +52,13 @@ const FavoriteSort = ({ hotels, duration }: FavoriteSortProps) => {
         style={{
           marginTop: 24
         }}
-        data={hotels}
+        data={favoriteHotels}
         contentContainerStyle={{ flexGrow: 1 }}
-        renderItem={({ item }) => <HotelItem hotel={item} duration={duration} />}
-        keyExtractor={(item) => `${item.hotelId}`}
+        renderItem={({ item }) => <FavoriteHotelItem hotel={item} />}
+        keyExtractor={(item) => `${item.hotelId}${item.checkIn}${item.duration}`}
         showsVerticalScrollIndicator={false}
       />
     </View>
-
   );
 };
 

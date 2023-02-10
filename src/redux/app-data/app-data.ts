@@ -1,9 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 
 import { ReducerNames } from '../../constants/reducer-names';
 import { SortOrders, SortTypes } from '../../constants/sort';
+import { SortTypesToHotelKeys } from '../../constants/sort-types-to-hotel-keys';
 import { AppData } from '../../models/app-data';
+import { FavoriteHotel } from '../../models/hotel';
 
 const initialState: AppData = {
   city: 'Москва',
@@ -39,12 +41,44 @@ const appData = createSlice({
     },
     setFavoriteHotels: (state, action) => {
       state.favoriteHotels = action.payload;
-    }
+    },
+    addToFavoriteHotels: (state, action) => {
+      state.favoriteHotels.push(action.payload);
+    },
+    deleteFromFavorites: (state, action: PayloadAction<FavoriteHotel>) => {
+      const hotelId = state.favoriteHotels.findIndex(
+        (el) => el.checkIn === action.payload.checkIn
+          && el.hotelId === action.payload.hotelId
+          && el.duration === action.payload.duration
+      );
+
+      state.favoriteHotels = [...state.favoriteHotels.slice(0, hotelId), ...state.favoriteHotels.slice(hotelId + 1)];
+    },
+    sortHotels: (state) => {
+      if (state.sortOrder === SortOrders.Asc) {
+        state.favoriteHotels = [...state.favoriteHotels].sort(
+          (a, b) => a[SortTypesToHotelKeys[state.sortType]] - b[SortTypesToHotelKeys[state.sortType]]
+        );
+      } else {
+        state.favoriteHotels = [...state.favoriteHotels].sort(
+          (a, b) => b[SortTypesToHotelKeys[state.sortType]] - a[SortTypesToHotelKeys[state.sortType]]
+        );
+      }
+    },
   }
 });
 
 export const {
-  setHotels, setCity, setCheckIn, setDuration, setSortOrder, setSortType, setFavoriteHotels
+  setHotels,
+  setCity,
+  setCheckIn,
+  setDuration,
+  setSortOrder,
+  setSortType,
+  setFavoriteHotels,
+  addToFavoriteHotels,
+  deleteFromFavorites,
+  sortHotels
 } = appData.actions;
 
 export const appReducer = appData.reducer;

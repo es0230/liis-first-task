@@ -1,35 +1,29 @@
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
 import {
   Image, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
 
 import { getNumericDeclension } from '../../helpers/get-numeric-declension';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { Hotel } from '../../models/hotel';
-import { addToFavoriteHotels, deleteFromFavorites, sortHotels } from '../../redux/app-data/app-data';
-import { selectIsFavoriteHotel } from '../../redux/app-data/selectors';
+import { useAppDispatch } from '../../hooks';
+import { FavoriteHotel } from '../../models/hotel';
+import { deleteFromFavorites } from '../../redux/app-data/app-data';
 
-type HotelItemProps = {
-  hotel: Hotel,
-  duration: number,
-  checkIn: string
-};
+  type HotelItemProps = {
+    hotel: FavoriteHotel,
+  };
 
-const HotelItem = ({ hotel, duration, checkIn }: HotelItemProps): JSX.Element => {
-  const { hotelName, stars, priceFrom } = hotel;
-
-  const isFavorite = useAppSelector(selectIsFavoriteHotel({ ...hotel, checkIn, duration }));
+const FavoriteHotelItem = ({ hotel }: HotelItemProps): JSX.Element => {
+  const {
+    hotelName, stars, priceFrom, checkIn, duration
+  } = hotel;
 
   const dispatch = useAppDispatch();
 
   const formattedDuration = getNumericDeclension(duration, ['ночь', 'ночи', 'ночей']);
 
   const handleFavoritePress = () => {
-    if (isFavorite) {
-      dispatch(deleteFromFavorites({ ...hotel, checkIn, duration }));
-    } else {
-      dispatch(addToFavoriteHotels({ ...hotel, checkIn, duration }));
-      dispatch(sortHotels());
-    }
+    dispatch(deleteFromFavorites({ ...hotel, checkIn, duration }));
   };
 
   return (
@@ -42,10 +36,7 @@ const HotelItem = ({ hotel, duration, checkIn }: HotelItemProps): JSX.Element =>
             <Text style={[styles.importantText, { flex: 1, paddingRight: 10, height: 40 }]}>{hotelName}</Text>
 
             <TouchableOpacity onPress={handleFavoritePress}>
-              <Image source={isFavorite
-                ? require('../../images/filled-heart.png')
-                : require('../../images/empty-heart.png')}
-              />
+              <Image source={require('../../images/filled-heart.png')} />
             </TouchableOpacity>
           </View>
 
@@ -72,9 +63,15 @@ const HotelItem = ({ hotel, duration, checkIn }: HotelItemProps): JSX.Element =>
       </View>
 
       <View style={styles.additionalInfo}>
-        <Text style={styles.secondaryText}>{`Цена за ${formattedDuration}: `}</Text>
+        <Text style={styles.secondaryText}>{dayjs(checkIn).locale('ru').format('DD MMMM YYYY')}</Text>
 
-        <Text style={styles.importantText}>{`${priceFrom} ₽`}</Text>
+        <View style={styles.additionalPriceInfo}>
+          <Text style={styles.secondaryText}>{`Цена за ${formattedDuration}: `}</Text>
+
+          <Text style={styles.importantText}>{`${priceFrom} ₽`}</Text>
+
+        </View>
+
       </View>
     </View>
   );
@@ -102,11 +99,16 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     marginBottom: 8
   },
-  additionalInfo: {
+  additionalPriceInfo: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center'
   },
+  additionalInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  }
 });
 
-export default HotelItem;
+export default FavoriteHotelItem;

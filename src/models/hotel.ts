@@ -17,3 +17,5 @@ export type Hotel = {
   hotelId: number,
   priceFrom: number
 };
+
+export type FavoriteHotel = Hotel & { checkIn: string, duration: number };
