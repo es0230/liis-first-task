@@ -2,30 +2,28 @@ import {
   ActivityIndicator,
   FlatList, Image, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import PagerView from 'react-native-pager-view';
 import { useRef, useState } from 'react';
 
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks';
 import { selectHotels, selectHotelsFetchFailed, selectIsLoading } from '../../redux/app-data/selectors';
-import { logOut } from '../../redux/user-data/user-data';
 import HotelItem from '../../ui-comonents/hotel-item/hotel-item';
 import { ScreenNames } from '../../constants/screen-names';
 import { RootStackParamList } from '../../navigation/main-navigator';
 import { getNumericDeclension } from '../../helpers/get-numeric-declension';
 import { ResultTabs } from '../../constants/result-tabs';
 import FavoriteSort from '../../ui-comonents/favorite-sort/favorite-sort';
+import FetchFailedMessage from '../../ui-comonents/fetch-failed-message/fetch-failed-message';
 
 import { commonStyles } from '../../constants/common-styles';
-import FetchFailedMessage from '../../ui-comonents/fetch-failed-message/fetch-failed-message';
+import LogOutButton from '../../ui-comonents/log-out-button/log-out-button';
 
 type ResultsScreenProps = NativeStackScreenProps<RootStackParamList, ScreenNames.Results>;
 
 const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
-  const dispatch = useAppDispatch();
   const hotels = useAppSelector(selectHotels);
   const isLoading = useAppSelector(selectIsLoading);
   const isFetchFailed = useAppSelector(selectHotelsFetchFailed);
@@ -39,13 +37,8 @@ const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
   const formattedCheckIn = dayjs(checkIn).locale('ru').format('DD MMMM YYYY');
   const formattedDuration = getNumericDeclension(duration, ['ночь', 'ночи', 'ночей']);
 
-  const handleLogoutPress = () => {
-    dispatch(logOut());
-    AsyncStorage.clear();
-  };
-
   const handleBackIconPress = () => {
-    navigation.navigate(ScreenNames.Search);
+    navigation.goBack();
   };
 
   const handlePageScroll = () => {
@@ -72,7 +65,9 @@ const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
         style={styles.hotelList}
         data={hotels}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 16, }}
-        renderItem={({ item }) => <HotelItem checkIn={checkIn} hotel={item} duration={duration} />}
+        renderItem={
+          ({ item }) => <HotelItem hotel={{ ...item, checkIn, duration }} isInFavoritesList={false} />
+        }
         keyExtractor={(item) => `${item.hotelId}`}
         showsVerticalScrollIndicator={false}
       />
@@ -88,9 +83,7 @@ const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
 
           <Text style={commonStyles.screenHeaderText}>Simple Hotel Check</Text>
 
-          <TouchableOpacity onPress={handleLogoutPress}>
-            <Image source={require('../../images/log-out.png')} />
-          </TouchableOpacity>
+          <LogOutButton />
         </View>
 
         <View style={styles.searchParams}>

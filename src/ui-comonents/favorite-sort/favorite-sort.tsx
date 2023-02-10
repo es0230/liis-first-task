@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -10,7 +11,7 @@ import {
   setSortOrder, setSortType, sortHotels
 } from '../../redux/app-data/app-data';
 import { selectFavoriteHotels } from '../../redux/app-data/selectors';
-import FavoriteHotelItem from '../favorite-hotel-item/favorite-hotel-item';
+import HotelItem from '../hotel-item/hotel-item';
 import SortOption from './sort-option';
 
 const FavoriteSort = () => {
@@ -18,11 +19,11 @@ const FavoriteSort = () => {
 
   const favoriteHotels = useAppSelector(selectFavoriteHotels);
 
-  const onSortOptionPress = (sortType: SortTypes, sortOrder: SortOrders) => {
+  const onSortOptionPress = useCallback((sortType: SortTypes, sortOrder: SortOrders) => {
     dispatch(setSortOrder(sortOrder));
     dispatch(setSortType(sortType));
     dispatch(sortHotels());
-  };
+  }, []);
 
   return (
     <View style={{
@@ -30,7 +31,7 @@ const FavoriteSort = () => {
       paddingHorizontal: 16,
     }}
     >
-      {favoriteHotels.length === 0
+      {!favoriteHotels.length
         ? (
           <View style={{ marginTop: 40, alignItems: 'center' }}>
             <Text style={{ fontSize: 18 }}>В избранном пока ничего нет</Text>
@@ -61,7 +62,7 @@ const FavoriteSort = () => {
               }}
               data={favoriteHotels}
               contentContainerStyle={{ flexGrow: 1, paddingBottom: 16, }}
-              renderItem={({ item }) => <FavoriteHotelItem hotel={item} />}
+              renderItem={({ item }) => <HotelItem hotel={item} isInFavoritesList />}
               keyExtractor={(item) => `${item.hotelId}${item.checkIn}${item.duration}`}
               showsVerticalScrollIndicator={false}
             />

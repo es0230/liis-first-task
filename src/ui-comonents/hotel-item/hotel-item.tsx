@@ -1,21 +1,26 @@
 import {
   Image, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
 
 import { getNumericDeclension } from '../../helpers/get-numeric-declension';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { Hotel } from '../../models/hotel';
+import { FavoriteHotel } from '../../models/hotel';
 import { addToFavoriteHotels, deleteFromFavorites, sortHotels } from '../../redux/app-data/app-data';
 import { selectIsFavoriteHotel } from '../../redux/app-data/selectors';
 
 type HotelItemProps = {
-  hotel: Hotel,
-  duration: number,
-  checkIn: string
+  hotel: FavoriteHotel,
+  isInFavoritesList: boolean,
 };
 
-const HotelItem = ({ hotel, duration, checkIn }: HotelItemProps): JSX.Element => {
-  const { hotelName, stars, priceFrom } = hotel;
+const HotelItem = ({
+  hotel, isInFavoritesList
+}: HotelItemProps): JSX.Element => {
+  const {
+    hotelName, stars, priceFrom, checkIn, duration
+  } = hotel;
 
   const isFavorite = useAppSelector(selectIsFavoriteHotel({ ...hotel, checkIn, duration }));
 
@@ -71,10 +76,21 @@ const HotelItem = ({ hotel, duration, checkIn }: HotelItemProps): JSX.Element =>
         </View>
       </View>
 
-      <View style={styles.additionalInfo}>
-        <Text style={styles.secondaryText}>{`Цена за ${formattedDuration}: `}</Text>
+      <View style={[styles.additionalInfo, !isInFavoritesList && { justifyContent: 'flex-end', }]}>
+        {isInFavoritesList
+          && (
+          <Text
+            style={styles.secondaryText}
+          >
+            {dayjs(hotel.checkIn).locale('ru').format('DD MMMM YYYY')}
+          </Text>
+          )}
 
-        <Text style={styles.importantText}>{`${priceFrom} ₽`}</Text>
+        <View style={styles.additionalPriceInfo}>
+          <Text style={styles.secondaryText}>{`Цена за ${formattedDuration}: `}</Text>
+
+          <Text style={styles.importantText}>{`${priceFrom} ₽`}</Text>
+        </View>
       </View>
     </View>
   );
@@ -103,6 +119,11 @@ const styles = StyleSheet.create({
     marginBottom: 8
   },
   additionalInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  additionalPriceInfo: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center'

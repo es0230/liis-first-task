@@ -24,11 +24,11 @@ function* fetchHotelsWorker({ payload }: PayloadAction<SearchParameters>) {
   try {
     const result = yield* call(() => api.get<Hotel[]>(requestURL));
     yield put(setHotels(result.data));
-    yield put(setIsLoading(false));
   } catch (err) {
-    yield put(setIsLoading(false));
     yield put(setHotelsFetchFailed(true));
     console.log(err);
+  } finally {
+    yield put(setIsLoading(false));
   }
 }
 

@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   TouchableOpacity, Text, Image, StyleSheet
 } from 'react-native';
@@ -42,13 +43,15 @@ const SortOption = ({
     onSortOptionPress(options.sortType, options.sortOrder);
   };
 
+  const isActiveOption = currentSortType === sortType;
+
   return (
     <TouchableOpacity
       activeOpacity={1}
-      style={[styles.favoriteSort, currentSortType === sortType && styles.activeOptionView]}
+      style={[styles.favoriteSort, isActiveOption && styles.activeOptionView]}
       onPress={() => handleSortOptionPress(getNewSortParams(currentSortOrder, currentSortType, sortType))}
     >
-      <Text style={currentSortType === sortType && styles.activeOptionText}>{text}</Text>
+      <Text style={isActiveOption && styles.activeOptionText}>{text}</Text>
 
       {getSortIcon(currentSortOrder, currentSortType, sortType)}
     </TouchableOpacity>
@@ -73,4 +76,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SortOption;
+export default React.memo(SortOption);
