@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import dayjs from 'dayjs';
-
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper';
+
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   selectDuration, selectHotels, selectHotelsFetchFailed, selectIsLoading

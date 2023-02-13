@@ -7,8 +7,8 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import PagerView from 'react-native-pager-view';
 import { useRef, useState } from 'react';
-
 import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper';
+
 import { useAppSelector } from '../../hooks';
 import { selectHotels, selectHotelsFetchFailed, selectIsLoading } from '../../redux/app-data/selectors';
 import HotelItem from '../../ui-comonents/hotel-item/hotel-item';
@@ -18,9 +18,9 @@ import { getNumericDeclension } from '../../helpers/get-numeric-declension';
 import { ResultTabs } from '../../constants/result-tabs';
 import FavoriteSort from '../../ui-comonents/favorite-sort/favorite-sort';
 import FetchFailedMessage from '../../ui-comonents/fetch-failed-message/fetch-failed-message';
+import LogOutButton from '../../ui-comonents/log-out-button/log-out-button';
 
 import { commonStyles } from '../../constants/common-styles';
-import LogOutButton from '../../ui-comonents/log-out-button/log-out-button';
 
 type ResultsScreenProps = NativeStackScreenProps<RootStackParamList, ScreenNames.Results>;
 
