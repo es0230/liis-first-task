@@ -19,6 +19,8 @@ type InputProps = {
   children?: JSX.Element,
   additionalStyles?: ViewStyle,
   inputMode?: string,
+  maxLength?: number,
+  contextMenuHidden?: boolean,
 };
 
 const Input = ({
@@ -42,8 +44,8 @@ const Input = ({
         secureTextEntry={name === AuthInputNames.Password}
         style={[
           styles.textInput,
-          (error && touched && !isFocused && styles.textInputError) || {},
           additionalStyles,
+          (error && touched && !isFocused && styles.textInputError) || {},
         ]}
         onBlur={handleInputBlur}
         onFocus={handleInputFocus}
@@ -52,7 +54,7 @@ const Input = ({
 
       {name === SearchInputNames.Duration && children}
 
-      {error && touched
+      {error && touched && Object.values(AuthInputNames).some((el) => el === name)
         && !isFocused && <Text style={commonStyles.inputError}>{error}</Text>}
     </View>
   );

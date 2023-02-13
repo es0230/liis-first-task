@@ -7,7 +7,7 @@ import { createAPI } from '../api';
 import { Hotel } from '../models/hotel';
 import { SearchParameters } from '../models/search-parameters';
 import { fetchHotels } from '../redux/actions';
-import { setHotels } from '../redux/app-data/app-data';
+import { setHotels, setHotelsFetchFailed, setIsLoading } from '../redux/app-data/app-data';
 import { authWorker } from './auth-saga';
 
 const api = createAPI();
@@ -18,11 +18,17 @@ function* fetchHotelsWorker({ payload }: PayloadAction<SearchParameters>) {
   const checkOut = dayjs(checkIn).add(duration, 'day').format('YYYY-MM-DD');
   const requestURL = `/cache.json?location=${city}&currency=rub&checkIn=${checkIn}&checkOut=${checkOut}&limit=10`;
 
+  yield put(setIsLoading(true));
+  yield put(setHotelsFetchFailed(false));
+
   try {
     const result = yield* call(() => api.get<Hotel[]>(requestURL));
     yield put(setHotels(result.data));
   } catch (err) {
+    yield put(setHotelsFetchFailed(true));
     console.log(err);
+  } finally {
+    yield put(setIsLoading(false));
   }
 }
 

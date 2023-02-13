@@ -1,55 +1,81 @@
 import {
-  FlatList, Image, StyleSheet, Text, TouchableOpacity, View
+  ActivityIndicator,
+  FlatList, Text, View
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import dayjs from 'dayjs';
 
-import { commonStyles } from '../../constants/common-styles';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { selectHotels } from '../../redux/app-data/selectors';
-import { logOut } from '../../redux/user-data/user-data';
+import {
+  selectDuration, selectHotels, selectHotelsFetchFailed, selectIsLoading
+} from '../../redux/app-data/selectors';
 import HotelItem from '../../ui-comonents/hotel-item/hotel-item';
 import SearchForm from '../../ui-comonents/search-form/search-form';
+import { ScreenNames } from '../../constants/screen-names';
+import { RootStackParamList } from '../../navigation/main-navigator';
+import { SearchParameters } from '../../models/search-parameters';
+import { setDuration } from '../../redux/app-data/app-data';
+import LogOutButton from '../../ui-comonents/log-out-button/log-out-button';
+import FetchFailedMessage from '../../ui-comonents/fetch-failed-message/fetch-failed-message';
 
-const SearchScreen = (): JSX.Element => {
+import { commonStyles } from '../../constants/common-styles';
+
+type SearchScreenProps = NativeStackScreenProps<RootStackParamList, ScreenNames.Search>;
+
+const SearchScreen = ({ navigation }: SearchScreenProps): JSX.Element => {
   const dispatch = useAppDispatch();
   const hotels = useAppSelector(selectHotels);
+  const currentDuration = useAppSelector(selectDuration);
+  const isLoading = useAppSelector(selectIsLoading);
+  const isFetchFailed = useAppSelector(selectHotelsFetchFailed);
 
-  const handleLogoutPress = () => {
-    dispatch(logOut());
+  const checkIn = dayjs().format('YYYY-MM-DD');
 
-    AsyncStorage.clear();
+  const onSearchPress = (searchParams: SearchParameters) => {
+    navigation.navigate(ScreenNames.Results, searchParams);
+
+    dispatch(setDuration(searchParams.duration));
   };
+
+  const content = isFetchFailed
+    ? <FetchFailedMessage />
+    : (
+      <FlatList
+        data={hotels}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 16 }}
+        renderItem={({ item }) => (
+          <HotelItem
+            hotel={{ ...item, checkIn, duration: currentDuration }}
+            isInFavoritesList={false}
+          />
+        )}
+        keyExtractor={(item) => `${item.hotelId}${checkIn}${currentDuration}`}
+        showsVerticalScrollIndicator={false}
+      />
+    );
 
   return (
     <View style={[commonStyles.container, { paddingHorizontal: 16, paddingTop: 69, gap: 24 }]}>
-      <View style={styles.header}>
-        <Text style={commonStyles.screenHeader}>Simple Hotel Check</Text>
-        <TouchableOpacity onPress={handleLogoutPress}>
-          <Image source={require('../../images/log-out.png')} />
-        </TouchableOpacity>
+      <View style={commonStyles.headerContainer}>
+        <Text style={commonStyles.screenHeaderText}>Simple Hotel Check</Text>
+
+        <LogOutButton />
       </View>
 
-      <SearchForm />
+      <SearchForm onSearchPress={onSearchPress} />
 
-      <View style={{ flex: 1, gap: 16 }}>
+      <View style={{
+        flex: 1, gap: 16,
+      }}
+      >
         <Text style={commonStyles.searchBlockHeader}>Подходящие бронирования</Text>
-        <FlatList
-          data={hotels}
-          contentContainerStyle={{ flexGrow: 1 }}
-          renderItem={({ item }) => <HotelItem hotel={item} />}
-          keyExtractor={(item) => `${item.hotelId}`}
-        />
+        {isLoading
+          ? <ActivityIndicator style={{ marginTop: 100 }} size="large" color="#5AC8FA" />
+          : content}
+
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-});
 
 export default SearchScreen;

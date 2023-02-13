@@ -6,20 +6,17 @@
  */
 
 import { useAppSelector } from './src/hooks';
+import MainNavigator from './src/navigation/main-navigator';
 import { selectIsAuth } from './src/redux/user-data/selectors';
-import SearchScreen from './src/screens/search-screen/search-screen';
 import AuthForm from './src/ui-comonents/auth-form/auth-form';
-
 
 function App(): JSX.Element {
   const isAuth = useAppSelector(selectIsAuth);
 
   return (
-    <>
-      {isAuth ?
-      <SearchScreen />
-      : <AuthForm />}
-    </>
+    isAuth ?
+      <MainNavigator />
+      : <AuthForm />
   );
 }
 

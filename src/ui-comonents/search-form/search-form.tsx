@@ -7,13 +7,24 @@ import dayjs from 'dayjs';
 import { useEffect } from 'react';
 
 import { SearchInputNames } from '../../constants/search-input-names';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { SearchParameters } from '../../models/search-parameters';
 import { fetchHotels } from '../../redux/actions';
 import Input from '../input/input';
 import DateInput from './search-form-components/date-input';
+import { selectCheckIn } from '../../redux/app-data/selectors';
 
 import { commonStyles } from '../../constants/common-styles';
+
+type SearchFormProps = {
+  onSearchPress: (searchParams: SearchParameters) => void,
+};
+
+type FormikProps = {
+  city: string,
+  checkIn: string,
+  duration: number,
+};
 
 const initialDate = dayjs();
 
@@ -26,17 +37,12 @@ const formInitialValues = {
 const validationSchema = yup.object().shape({
   [SearchInputNames.City]: yup.string().required('Необходимо ввести название города'),
   [SearchInputNames.CheckIn]: yup.string().required('Необходимо выбрать дату заезда'),
-  [SearchInputNames.Duration]: yup.number().min(1).max(31),
+  [SearchInputNames.Duration]: yup.number().min(1).max(31).required('Необходимо указать продолжительность пребывания'),
 });
 
-type FormikProps = {
-  city: string,
-  checkIn: string,
-  duration: number,
-};
-
-const SearchForm = (): JSX.Element => {
+const SearchForm = ({ onSearchPress }: SearchFormProps): JSX.Element => {
   const dispatch = useAppDispatch();
+  const checkInDate = useAppSelector(selectCheckIn);
 
   const getHotels = (payload: SearchParameters) => {
     dispatch(fetchHotels(payload));
@@ -47,7 +53,10 @@ const SearchForm = (): JSX.Element => {
   }, []);
 
   const handleFormSubmit = ({ city, duration }: FormikProps) => {
-    getHotels({ city, checkIn: initialDate.format('YYYY-MM-DD'), duration });
+    const paramsToSearch = { city, checkIn: checkInDate, duration };
+
+    getHotels(paramsToSearch);
+    onSearchPress(paramsToSearch);
   };
 
   return (
@@ -95,6 +104,8 @@ const SearchForm = (): JSX.Element => {
                 name={SearchInputNames.Duration}
                 additionalStyles={styles.searchInput}
                 inputMode="numeric"
+                maxLength={2}
+                contextMenuHidden
               >
                 <Image
                   style={commonStyles.numeralInputImage}
