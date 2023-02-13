@@ -37,7 +37,7 @@ const formInitialValues = {
 const validationSchema = yup.object().shape({
   [SearchInputNames.City]: yup.string().required('Необходимо ввести название города'),
   [SearchInputNames.CheckIn]: yup.string().required('Необходимо выбрать дату заезда'),
-  [SearchInputNames.Duration]: yup.number().min(1).max(31),
+  [SearchInputNames.Duration]: yup.number().min(1).max(31).required('Необходимо указать продолжительность пребывания'),
 });
 
 const SearchForm = ({ onSearchPress }: SearchFormProps): JSX.Element => {
@@ -104,6 +104,8 @@ const SearchForm = ({ onSearchPress }: SearchFormProps): JSX.Element => {
                 name={SearchInputNames.Duration}
                 additionalStyles={styles.searchInput}
                 inputMode="numeric"
+                maxLength={2}
+                contextMenuHidden
               >
                 <Image
                   style={commonStyles.numeralInputImage}

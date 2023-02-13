@@ -22,7 +22,7 @@ const HotelItem = ({
     hotelName, stars, priceFrom, checkIn, duration
   } = hotel;
 
-  const isFavorite = useAppSelector(selectIsFavoriteHotel({ ...hotel, checkIn, duration }));
+  const isFavorite = isInFavoritesList || useAppSelector(selectIsFavoriteHotel({ ...hotel, checkIn, duration }));
 
   const dispatch = useAppDispatch();
 

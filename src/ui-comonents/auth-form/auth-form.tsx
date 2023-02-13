@@ -101,25 +101,6 @@ const styles = StyleSheet.create({
     paddingTop: '15%',
     gap: 32,
   },
-  textInput: {
-    height: 50,
-    width: '100%',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    color: '#424242',
-    marginBottom: 16,
-    paddingVertical: 15,
-    paddingLeft: 15,
-  },
-  error: {
-    color: 'white',
-    position: 'absolute',
-    top: 48,
-  },
-  textInputError: {
-    borderColor: '#ff3b30',
-    borderWidth: 1,
-  },
 });
 
 export default AuthForm;

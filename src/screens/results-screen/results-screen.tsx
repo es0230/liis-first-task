@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: 'row',
     gap: 16,
+    overflow: 'hidden'
   },
   hotelList: {
     marginTop: 24
