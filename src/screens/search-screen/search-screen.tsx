@@ -5,6 +5,7 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import dayjs from 'dayjs';
 
+import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   selectDuration, selectHotels, selectHotelsFetchFailed, selectIsLoading
@@ -54,8 +55,12 @@ const SearchScreen = ({ navigation }: SearchScreenProps): JSX.Element => {
       />
     );
 
+  const isIphoneXPlus = isIphoneX();
+
   return (
-    <View style={[commonStyles.container, { paddingHorizontal: 16, paddingTop: 69, gap: 24 }]}>
+    <View style={[commonStyles.container, { paddingHorizontal: 16, paddingTop: 16, gap: 24 },
+      isIphoneXPlus && { paddingTop: getStatusBarHeight() + 24 }]}
+    >
       <View style={commonStyles.headerContainer}>
         <Text style={commonStyles.screenHeaderText}>Simple Hotel Check</Text>
 
