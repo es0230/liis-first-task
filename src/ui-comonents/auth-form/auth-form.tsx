@@ -1,6 +1,8 @@
 import { Formik } from 'formik';
 import {
-  ImageBackground, Keyboard, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View
+  ImageBackground,
+  Keyboard,
+  KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View
 } from 'react-native';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -33,61 +35,63 @@ const AuthForm = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={commonStyles.container}>
-        <ImageBackground
-          style={styles.backgroundImage}
-          resizeMode="cover"
-          source={require('../../images/auth-background.png')}
-        >
-          <View>
-            <Text style={[commonStyles.text, { fontSize: 18 }]}>Добро пожаловать в</Text>
-            <Text style={[commonStyles.text, commonStyles.screenHeaderText]}>Simple Hotel Check</Text>
-          </View>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={commonStyles.container}>
+          <ImageBackground
+            style={styles.backgroundImage}
+            resizeMode="cover"
+            source={require('../../images/auth-background.png')}
+          >
+            <View>
+              <Text style={[commonStyles.text, { fontSize: 18 }]}>Добро пожаловать в</Text>
+              <Text style={[commonStyles.text, commonStyles.screenHeaderText]}>Simple Hotel Check</Text>
+            </View>
 
-          <Formik initialValues={formInitialValues} onSubmit={handleFormSubmit} validationSchema={validationSchema}>
-            {({
-              values, dirty, errors, touched, isValid, handleBlur, handleChange, handleSubmit
-            }) => (
-              <View style={{ gap: 16 }}>
-                <Input
-                  placeholder="Логин"
-                  error={errors[AuthInputNames.Email]}
-                  touched={touched[AuthInputNames.Email]}
-                  onChangeText={handleChange(AuthInputNames.Email)}
-                  onBlur={handleBlur(AuthInputNames.Email)}
-                  value={values[AuthInputNames.Email]}
-                  name={AuthInputNames.Email}
-                  inputMode="email"
-                />
+            <Formik initialValues={formInitialValues} onSubmit={handleFormSubmit} validationSchema={validationSchema}>
+              {({
+                values, dirty, errors, touched, isValid, handleBlur, handleChange, handleSubmit
+              }) => (
+                <View style={{ gap: 16 }}>
+                  <Input
+                    placeholder="Логин"
+                    error={errors[AuthInputNames.Email]}
+                    touched={touched[AuthInputNames.Email]}
+                    onChangeText={handleChange(AuthInputNames.Email)}
+                    onBlur={handleBlur(AuthInputNames.Email)}
+                    value={values[AuthInputNames.Email]}
+                    name={AuthInputNames.Email}
+                    inputMode="email"
+                  />
 
-                <Input
-                  placeholder="Пароль"
-                  error={errors[AuthInputNames.Password]}
-                  touched={touched[AuthInputNames.Password]}
-                  onChangeText={handleChange(AuthInputNames.Password)}
-                  onBlur={handleBlur(AuthInputNames.Password)}
-                  value={values[AuthInputNames.Password]}
-                  name={AuthInputNames.Password}
-                />
+                  <Input
+                    placeholder="Пароль"
+                    error={errors[AuthInputNames.Password]}
+                    touched={touched[AuthInputNames.Password]}
+                    onChangeText={handleChange(AuthInputNames.Password)}
+                    onBlur={handleBlur(AuthInputNames.Password)}
+                    value={values[AuthInputNames.Password]}
+                    name={AuthInputNames.Password}
+                  />
 
-                <TouchableOpacity
-                  onPress={handleSubmit}
-                  activeOpacity={1}
-                  style={[
-                    commonStyles.submit,
-                    (isValid && dirty) && commonStyles.submitEnabled,
-                    { marginTop: 8 }
-                  ]}
-                >
-                  <Text style={commonStyles.text}>Войти</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </Formik>
-        </ImageBackground>
-      </View>
-    </TouchableWithoutFeedback>
+                  <TouchableOpacity
+                    onPress={handleSubmit}
+                    activeOpacity={1}
+                    style={[
+                      commonStyles.submit,
+                      (isValid && dirty) && commonStyles.submitEnabled,
+                      { marginTop: 8 }
+                    ]}
+                  >
+                    <Text style={commonStyles.text}>Войти</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </Formik>
+          </ImageBackground>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -97,8 +101,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 16,
     paddingRight: 16,
-    paddingBottom: '50%',
-    paddingTop: '15%',
     gap: 32,
   },
 });

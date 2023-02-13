@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import PagerView from 'react-native-pager-view';
 import { useRef, useState } from 'react';
+import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper';
 
 import { useAppSelector } from '../../hooks';
 import { selectHotels, selectHotelsFetchFailed, selectIsLoading } from '../../redux/app-data/selectors';
@@ -17,9 +18,9 @@ import { getNumericDeclension } from '../../helpers/get-numeric-declension';
 import { ResultTabs } from '../../constants/result-tabs';
 import FavoriteSort from '../../ui-comonents/favorite-sort/favorite-sort';
 import FetchFailedMessage from '../../ui-comonents/fetch-failed-message/fetch-failed-message';
+import LogOutButton from '../../ui-comonents/log-out-button/log-out-button';
 
 import { commonStyles } from '../../constants/common-styles';
-import LogOutButton from '../../ui-comonents/log-out-button/log-out-button';
 
 type ResultsScreenProps = NativeStackScreenProps<RootStackParamList, ScreenNames.Results>;
 
@@ -73,9 +74,11 @@ const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
       />
     );
 
+  const isIphoneXPlus = isIphoneX();
+
   return (
     <View style={[commonStyles.container]}>
-      <View style={styles.navigatorContainer}>
+      <View style={[styles.navigatorContainer, isIphoneXPlus && { paddingTop: getStatusBarHeight() + 24 }]}>
         <View style={commonStyles.headerContainer}>
           <TouchableOpacity onPress={handleBackIconPress}>
             <Image style={styles.backIcon} source={require('../../images/back.png')} />
@@ -172,11 +175,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
   },
   navigatorContainer: {
-    paddingTop: 69,
+    paddingTop: 16,
     backgroundColor: 'white',
     width: '100%',
     paddingHorizontal: 16,
-    borderRadius: 16,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
     paddingBottom: 16,
     gap: 24,
   },
